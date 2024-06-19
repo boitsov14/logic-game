@@ -37,10 +37,10 @@ pub(super) fn parse_formula(s: &str) -> Result<Formula, Error> {
 
 /// Parses a sequent.
 #[wasm_bindgen]
-pub fn parse_sequent(s: &str) -> Result<JsValue, String> {
+pub fn parse_sequent(s: &str) -> Result<Sequent, String> {
     check_parentheses(&s).map_err(|e| e.to_string())?;
     let seq = parser::sequent(&s).map_err(|e| Error::Peg { s: s.into(), e }.to_string())?;
-    Ok(serde_wasm_bindgen::to_value(&seq).unwrap())
+    Ok(seq)
 }
 
 /// Checks if the number of left and right parentheses are equal.
@@ -306,13 +306,8 @@ mod tests {
         )
     }
 
-    // #[case("\t\n\rP\t\n\r∧\t\n\rQ\t\n\r" => "P ∧ Q")]
-    // #[case("(((P)∧((Q))))" => "P ∧ Q")]
+    #[case("(((P)∧((Q))))" => r"P \land Q")]
     fn test_parse_fml2(s: &str) -> String {
-        // TODO: 2024/06/18
-        // let mut names = Names::default();
-        // let fml = parse_formula(s, &mut names, false).unwrap();
-        // fml.display(&names).to_string()
-        "".to_string()
+        parse_formula(s).unwrap().to_string()
     }
 }

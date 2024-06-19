@@ -36,10 +36,11 @@ pub(super) fn parse_formula(s: &str) -> Result<Formula, Error> {
 }
 
 /// Parses a sequent.
-pub fn parse_sequent(s: &str) -> Result<Sequent, Error> {
-    check_parentheses(&s)?;
-    let seq = parser::sequent(&s).map_err(|e| Error::Peg { s: s.into(), e })?;
-    Ok(seq)
+#[wasm_bindgen]
+pub fn parse_sequent(s: &str) -> Result<JsValue, String> {
+    check_parentheses(&s).map_err(|e| e.to_string())?;
+    let seq = parser::sequent(&s).map_err(|e| Error::Peg { s: s.into(), e }.to_string())?;
+    Ok(serde_wasm_bindgen::to_value(&seq).unwrap())
 }
 
 /// Checks if the number of left and right parentheses are equal.

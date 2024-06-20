@@ -1,4 +1,4 @@
-import { parse_sequent, to_latex_fml, to_latex_seq } from 'wasm-lib'
+import { parse_sequent, to_latex_fml, to_latex_seq } from 'wasm'
 
 const App = () => {
   const sequent = 'A, B, C |- D'

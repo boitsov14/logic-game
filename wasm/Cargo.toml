@@ -8,12 +8,14 @@ crate-type = ["cdylib"]
 
 [dependencies]
 peg = "0.8.3"
-test-case = "3.3.1"
 thiserror = "1.0.61"
 wasm-bindgen = "0.2.92"
 itertools = "0.13.0"
 serde = { version = "1.0.203", features = ["derive"] }
 tsify = "0.4.5"
+
+[dev-dependencies]
+test-case = "3.3.1"
 
 [profile.release]
 lto = true

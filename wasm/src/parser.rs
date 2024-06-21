@@ -21,20 +21,6 @@ pub enum Error {
     },
 }
 
-/// Parses a term.
-pub(super) fn parse_term(s: &str) -> Result<Term, Error> {
-    check_parentheses(&s)?;
-    let term = parser::term(&s).map_err(|e| Error::Peg { s: s.into(), e })?;
-    Ok(term)
-}
-
-/// Parses a formula.
-pub(super) fn parse_formula(s: &str) -> Result<Formula, Error> {
-    check_parentheses(&s)?;
-    let fml = parser::formula(&s).map_err(|e| Error::Peg { s: s.into(), e })?;
-    Ok(fml)
-}
-
 /// Parses a sequent.
 #[wasm_bindgen]
 pub fn parse_sequent(s: &str) -> Result<Sequent, String> {
@@ -308,6 +294,38 @@ mod tests {
 
     #[case("(((P)∧((Q))))" => r"P \land Q")]
     fn test_parse_fml2(s: &str) -> String {
-        parse_formula(s).unwrap().to_string()
+        fml(s).to_string()
+    }
+
+    #[case("x")]
+    #[case("f(x)")]
+    #[case("f(x,y,z)")]
+    #[case("f(x,g(y,h(x,z)))")]
+    fn term_display(s: &str) {
+        assert_eq!(term(s).to_string(), s);
+    }
+
+    #[case("P(x)")]
+    #[case("P(x,y,z)")]
+    #[case("P(x,f(y,g(z)))")]
+    #[case(r"\lnot P")]
+    #[case(r"P1 \land (Q \land (R \land S))")]
+    #[case(r"P2 \lor (Q \lor (R \lor S))")]
+    #[case(r"P3 \rightarrow (Q \rightarrow (R \rightarrow S))")]
+    #[case(r"P4 \leftrightarrow (Q \leftrightarrow (R \leftrightarrow S))")]
+    #[case(r"\forall xP(x)")]
+    #[case(r"\forall x\forall y\forall zP(x,y,z)")]
+    #[case(r"\exists xQ(x)")]
+    #[case(r"\exists x\exists y\exists zQ(x,y,z)")]
+    #[case(r"((P \land (Q \land R)) \rightarrow ((S \lor (T \lor U)) \rightarrow V)) \leftrightarrow W")]
+    fn fml_display(s: &str) {
+        assert_eq!(fml(s).to_string(), s);
+    }
+
+    #[case(r"P \vdash Q")]
+    #[case(r"P, Q, R \vdash S, T, U")]
+    #[case(r" \vdash ")]
+    fn sequent_display(s: &str) {
+        assert_eq!(seq(s).to_string(), s);
     }
 }

@@ -2,8 +2,11 @@ import { parse_sequent, to_latex_fml, to_latex_seq } from 'wasm'
 import Latex from './Latex'
 
 const App = () => {
-  const sequent = 'A, B, C |- D'
-  const parsed = parse_sequent(sequent)
+  const sequent = 'A, B, C |- \t\n\rP\t\n\r∧\t\n\rQ０\t\n\r'
+  console.log(sequent) // eslint-disable-line no-console
+  const sequent1 = sequent.normalize('NFKC').trim().replace(/\s+/g, ' ')
+  console.log(sequent1) // eslint-disable-line no-console
+  const parsed = parse_sequent(sequent1)
   const str = to_latex_seq(parsed)
   console.log(str) // eslint-disable-line no-console
   const ant = parsed.ant.map((x) => to_latex_fml(x))

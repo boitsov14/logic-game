@@ -5,25 +5,23 @@ const App = () => {
   const sequent = 'A, B, C |- D'
   const parsed = parse_sequent(sequent)
   const str = to_latex_seq(parsed)
-  console.log(str)
+  console.log(str) // eslint-disable-line no-console
   const ant = parsed.ant.map((x) => to_latex_fml(x))
-  for (let p of ant) {
-    console.log(p)
-  }
+  ant.forEach((p) => console.log(p)) // eslint-disable-line no-console
 
   return (
     <>
-      <div class='container mx-auto px-4 bg-info'>
-        <div class='flex flex-col h-screen'>
+      <div class='container mx-auto px-4'>
+        <div class='flex h-screen flex-col'>
           <div class='sticky top-0'>header</div>
-          <div class='flex-grow'>
+          <div class='grow'>
             {/* sequent */}
             <div>
               <table>
                 <tbody>
                   <tr>
                     <td>
-                      <Latex tex={'P \\land Q \\to P'} />
+                      <Latex tex={'P \\land Q \\to P \\and'} />
                     </td>
                   </tr>
                   <tr>
@@ -36,34 +34,34 @@ const App = () => {
             </div>
             {/* sequent end */}
           </div>
-          <div class='grid grid-cols-3 p-2 sticky bottom-0'>
+          <div class='sticky bottom-0 grid grid-cols-3 p-2'>
             <div class='p-1'>
-              <button class='text-white w-full rounded-full py-2 px-4 bg-gradient-to-b from-neutral-700 to-neutral-900 active:from-neutral-900 active:to-neutral-700 focus:from-green-600 focus:to-green-600'>
+              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 px-4 py-2 text-white focus:from-green-600 focus:to-green-600 active:from-neutral-900 active:to-neutral-700'>
                 button
               </button>
             </div>
             <div class='p-1'>
-              <button class='text-white w-full rounded-full py-2 px-4 bg-gradient-to-b from-neutral-700 to-neutral-900'>
+              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 px-4 py-2 text-white'>
                 button
               </button>
             </div>
             <div class='p-1'>
-              <button class='text-white w-full rounded-full py-2 px-4 bg-gradient-to-b from-neutral-700 to-neutral-900'>
+              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 px-4 py-2 text-white'>
                 button
               </button>
             </div>
             <div class='p-1'>
-              <button class='text-white w-full rounded-full py-2 px-4 bg-gradient-to-b from-neutral-700 to-neutral-900'>
+              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 px-4 py-2 text-white'>
                 button
               </button>
             </div>
             <div class='p-1'>
-              <button class='text-white w-full rounded-full py-2 px-4 bg-gradient-to-b from-neutral-700 to-neutral-900'>
+              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 px-4 py-2 text-white'>
                 button
               </button>
             </div>
             <div class='p-1'>
-              <button class='text-white w-full rounded-full py-2 px-4 bg-gradient-to-b from-neutral-700 to-neutral-900'>
+              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 px-4 py-2 text-white'>
                 button
               </button>
             </div>

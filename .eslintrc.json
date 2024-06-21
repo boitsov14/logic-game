@@ -1,5 +1,6 @@
 {
   "env": { "browser": true },
+  "root": true,
   "extends": [
     "eslint:recommended",
     "airbnb-base",
@@ -8,13 +9,20 @@
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:@typescript-eslint/strict",
     "plugin:solid/typescript",
+    "plugin:tailwindcss/recommended",
     "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": { "project": ["./tsconfig.json"] },
-  "plugins": ["@typescript-eslint", "solid"],
+  "plugins": ["@typescript-eslint", "solid", "tailwindcss"],
   "rules": {
     "import/extensions": ["error", "ignorePackages", { "": "never" }],
     "prettier/prettier": ["error", { "endOfLine": "auto" }]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js"],
+      "parser": "@typescript-eslint/parser"
+    }
+  ]
 }

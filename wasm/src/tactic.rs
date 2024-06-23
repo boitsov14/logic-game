@@ -1,5 +1,5 @@
 #![allow(non_snake_case)]
-use crate::lang::{Formula, Sequent, Term};
+use crate::lang::{Formula, Sequent};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;

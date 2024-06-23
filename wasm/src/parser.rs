@@ -81,8 +81,8 @@ peg::parser!( grammar parser() for str {
 
     /// Parses a sequent.
     pub(super) rule sequent() -> Sequent =
-        ant:(formula() ** (_ "," _)) _ turnstile() _ suc:(formula() ** (_ "," _)) { Sequent { ant, suc } } /
-        p:formula() { Sequent { ant: vec![], suc: vec![p] } } /
+        ant:(formula() ** (_ "," _)) _ turnstile() _ suc:formula() { Sequent { ant, suc } } /
+        p:formula() { Sequent { ant: vec![], suc: p } } /
         expected!("sequent")
 
     rule alpha() = [ 'a'..='z' | 'A'..='Z' ]
@@ -228,66 +228,45 @@ mod tests {
     #[test]
     fn test_parse_seq() {
         assert_eq!(
-            seq("P, Q, R ⊢ S, T, U"),
+            seq("P, Q, R ⊢ S"),
             Sequent {
                 ant: vec![fml("P"), fml("Q"), fml("R")],
-                suc: vec![fml("S"), fml("T"), fml("U")]
+                suc: fml("S")
             }
         );
         assert_eq!(
-            seq("P, Q ⊢ R, S"),
+            seq("P, Q ⊢ R"),
             Sequent {
                 ant: vec![fml("P"), fml("Q")],
-                suc: vec![fml("R"), fml("S")]
+                suc: fml("R")
             }
         );
         assert_eq!(
             seq("P ⊢ Q"),
             Sequent {
                 ant: vec![fml("P")],
-                suc: vec![fml("Q")]
+                suc: fml("Q")
             }
         );
         assert_eq!(
-            seq("P ⊢"),
-            Sequent {
-                ant: vec![fml("P")],
-                suc: vec![]
-            }
-        );
-        assert_eq!(
-            seq("⊢ P"),
-            Sequent {
-                ant: vec![],
-                suc: vec![fml("P")]
-            }
-        );
-        assert_eq!(
-            seq("⊢"),
-            Sequent {
-                ant: vec![],
-                suc: vec![]
-            }
-        );
-        assert_eq!(
-            seq("P ∧ Q, R ∨ S, ∀xP(x) ⊢ ∃yQ(y), ¬R, ∃z∀wS(z,w)"),
+            seq("P ∧ Q, R ∨ S, ∀xP(x) ⊢ ∃yQ(y)"),
             Sequent {
                 ant: vec![fml("P ∧ Q"), fml("R ∨ S"), fml("∀xP(x)")],
-                suc: vec![fml("∃yQ(y)"), fml("¬R"), fml("∃z∀wS(z,w)")]
+                suc: fml("∃yQ(y)")
             }
         );
         assert_eq!(
             seq("P"),
             Sequent {
                 ant: vec![],
-                suc: vec![fml("P")]
+                suc: fml("P")
             }
         );
         assert_eq!(
             seq("¬P ∧ Q ∨ R → S ↔ ∀x∃yP(x,y)"),
             Sequent {
                 ant: vec![],
-                suc: vec![fml("¬P ∧ Q ∨ R → S ↔ ∀x∃yP(x,y)")]
+                suc: fml("¬P ∧ Q ∨ R → S ↔ ∀x∃yP(x,y)")
             }
         )
     }
@@ -323,8 +302,7 @@ mod tests {
     }
 
     #[case(r"P \vdash Q")]
-    #[case(r"P, Q, R \vdash S, T, U")]
-    #[case(r" \vdash ")]
+    #[case(r"P, Q, R \vdash S")]
     fn sequent_display(s: &str) {
         assert_eq!(seq(s).to_string(), s);
     }

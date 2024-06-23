@@ -104,11 +104,7 @@ impl std::fmt::Display for Sequent {
                 .map(|p| p.to_string())
                 .collect_vec()
                 .join(", "),
-            self.suc
-                .iter()
-                .map(|p| p.to_string())
-                .collect_vec()
-                .join(", ")
+            self.suc.to_string()
         )
     }
 }

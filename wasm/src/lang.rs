@@ -29,5 +29,5 @@ pub enum Formula {
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Sequent {
     pub ant: Vec<Formula>,
-    pub suc: Vec<Formula>,
+    pub suc: Formula,
 }

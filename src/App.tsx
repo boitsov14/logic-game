@@ -1,16 +1,25 @@
-import { parse_sequent, to_latex_fml, to_latex_seq } from 'wasm'
+import {
+  parse_sequent,
+  to_latex_fml,
+  to_latex_seq,
+  Tactic,
+  display,
+} from 'wasm'
 import Latex from './Latex'
 
 const App = () => {
-  const sequent = 'A, B, C |- \t\n\rP\t\n\r∧\t\n\rQ０\t\n\r'
-  console.log(sequent) // eslint-disable-line no-console
-  const sequent1 = sequent.normalize('NFKC').trim().replace(/\s+/g, ' ')
-  console.log(sequent1) // eslint-disable-line no-console
-  const parsed = parse_sequent(sequent1)
-  const str = to_latex_seq(parsed)
-  console.log(str) // eslint-disable-line no-console
-  const ant = parsed.ant.map((x) => to_latex_fml(x))
+  const s = 'A, B, C |- \t\n\rP\t\n\r∧\t\n\rQ０\t\n\r'
+  console.log(s) // eslint-disable-line no-console
+  const s1 = s.normalize('NFKC').trim().replace(/\s+/g, ' ')
+  console.log(s1) // eslint-disable-line no-console
+  const seq = parse_sequent(s1)
+  const s2 = to_latex_seq(seq)
+  console.log(s2) // eslint-disable-line no-console
+  const ant = seq.ant.map((x) => to_latex_fml(x))
   ant.forEach((p) => console.log(p)) // eslint-disable-line no-console
+  const byContra = Tactic.ByContra
+  const s3 = display(byContra)
+  console.log(s3) // eslint-disable-line no-console
 
   return (
     <>

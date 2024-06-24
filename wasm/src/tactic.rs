@@ -34,7 +34,6 @@ pub enum Result {
     Done,
     Subgoal(Sequent),
     Subgoals((Sequent, Sequent)),
-    Candidates(Vec<Formula>),
 }
 
 #[wasm_bindgen(getter_with_clone)]
@@ -97,7 +96,27 @@ pub fn candidates(seq: Sequent) -> Vec<Candidate> {
                     _ => {}
                 }
             }
-            Apply => todo!(),
+            Apply => {
+                for fml in seq.ant.iter() {
+                    let mut seq = seq.clone();
+                    match fml {
+                        Not(p) if seq.suc == False => {
+                            seq.suc = *p.clone();
+                            let candidate =
+                                Candidate::new(tactic, Some(fml.clone()), None, None, Subgoal(seq));
+                            candidates.push(candidate);
+                        }
+                        To(p, q) if seq.suc == **q => {
+                            seq.suc = *p.clone();
+                            let candidate =
+                                Candidate::new(tactic, Some(fml.clone()), None, None, Subgoal(seq));
+                            candidates.push(candidate);
+                        }
+                        All(x, p) => todo!(),
+                        _ => {}
+                    }
+                }
+            }
             Have => todo!(),
             Constructor => todo!(),
             Cases => todo!(),
@@ -110,90 +129,4 @@ pub fn candidates(seq: Sequent) -> Vec<Candidate> {
         }
     }
     candidates
-}
-
-// TODO: 2024/06/25 削除予定
-#[wasm_bindgen]
-pub fn apply(
-    tactic: Tactic,
-    mut sequent: Sequent,
-    fml1: Option<Formula>,
-    fml2: Option<Formula>,
-    term: Option<Term>,
-) -> Result {
-    use Formula::*;
-    use Tactic::*;
-    match tactic {
-        Assumption => Result::Done,
-        Intro => {
-            let fml = sequent.suc;
-            match fml {
-                Not(p) => {
-                    sequent.ant.push(*p);
-                    sequent.suc = False;
-                    Result::Subgoal(sequent)
-                }
-                To(p, q) => {
-                    sequent.ant.push(*p);
-                    sequent.suc = *q;
-                    Result::Subgoal(sequent)
-                }
-                All(x, p) => {
-                    // TODO: 2024/06/24
-                    todo!()
-                }
-                _ => unreachable!("invalid tactic"),
-            }
-        }
-        Apply => {
-            match fml1 {
-                Some(fml) => {
-                    match fml {
-                        Not(p) => {
-                            sequent.suc = *p;
-                            Result::Subgoal(sequent)
-                        }
-                        To(p, _) => {
-                            sequent.suc = *p;
-                            Result::Subgoal(sequent)
-                        }
-                        All(x, p) => {
-                            // TODO: 2024/06/24
-                            todo!()
-                        }
-                        _ => unreachable!("invalid tactic"),
-                    }
-                }
-                None => {
-                    let mut fmls = vec![];
-                    for fml in sequent.ant.iter() {
-                        match fml {
-                            Not(p) => {
-                                if sequent.suc == False {
-                                    fmls.push(*p.clone());
-                                }
-                            }
-                            To(p, q) => {
-                                if sequent.suc == **q {
-                                    fmls.push(*p.clone());
-                                }
-                            }
-                            All(x, p) => {}
-                            _ => {}
-                        }
-                    }
-                    Result::Candidates(fmls)
-                }
-            }
-        }
-        Have => todo!(),
-        Constructor => todo!(),
-        Cases => todo!(),
-        Left => todo!(),
-        Right => todo!(),
-        Use => todo!(),
-        Trivial => todo!(),
-        Exfalso => todo!(),
-        ByContra => todo!(),
-    }
 }

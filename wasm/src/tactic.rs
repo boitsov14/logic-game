@@ -172,7 +172,27 @@ pub fn candidates(seq: Sequent) -> Vec<Candidate> {
                     }
                 }
             }
-            Constructor => todo!(),
+            Constructor => {
+                let mut seq1 = seq.clone();
+                let mut seq2 = seq.clone();
+                match seq.suc {
+                    And(ref p, ref q) => {
+                        seq1.suc = *p.clone();
+                        seq2.suc = *q.clone();
+                        let candidate =
+                            Candidate::new(tactic, None, None, None, Subgoals((seq1, seq2)));
+                        candidates.push(candidate);
+                    }
+                    Iff(ref p, ref q) => {
+                        seq1.suc = To(Box::new(*p.clone()), Box::new(*q.clone()));
+                        seq2.suc = To(Box::new(*q.clone()), Box::new(*p.clone()));
+                        let candidate =
+                            Candidate::new(tactic, None, None, None, Subgoals((seq1, seq2)));
+                        candidates.push(candidate);
+                    }
+                    _ => {}
+                }
+            }
             Cases => todo!(),
             Left => todo!(),
             Right => todo!(),

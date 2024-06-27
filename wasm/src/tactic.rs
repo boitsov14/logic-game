@@ -193,7 +193,47 @@ pub fn candidates(seq: Sequent) -> Vec<Candidate> {
                     _ => {}
                 }
             }
-            Cases => todo!(),
+            Cases => {
+                for fml in seq.ant.iter() {
+                    match fml {
+                        And(p, q) => {
+                            let mut seq = seq.clone();
+                            seq.ant.retain(|fml0| fml0 != fml);
+                            seq.ant.push(*p.clone());
+                            seq.ant.push(*q.clone());
+                            let candidate =
+                                Candidate::new(tactic, Some(fml.clone()), None, None, Subgoal(seq));
+                            candidates.push(candidate);
+                        }
+                        Or(p, q) => {
+                            let mut seq1 = seq.clone();
+                            seq1.ant.retain(|fml0| fml0 != fml);
+                            let mut seq2 = seq1.clone();
+                            seq1.ant.push(*p.clone());
+                            seq2.ant.push(*q.clone());
+                            let candidate = Candidate::new(
+                                tactic,
+                                Some(fml.clone()),
+                                None,
+                                None,
+                                Subgoals((seq1, seq2)),
+                            );
+                            candidates.push(candidate);
+                        }
+                        Iff(p, q) => {
+                            let mut seq = seq.clone();
+                            seq.ant.retain(|fml0| fml0 != fml);
+                            seq.ant.push(To(Box::new(*p.clone()), Box::new(*q.clone())));
+                            seq.ant.push(To(Box::new(*q.clone()), Box::new(*p.clone())));
+                            let candidate =
+                                Candidate::new(tactic, Some(fml.clone()), None, None, Subgoal(seq));
+                            candidates.push(candidate);
+                        }
+                        Ex(x, p) => todo!(),
+                        _ => {}
+                    }
+                }
+            }
             Left => todo!(),
             Right => todo!(),
             Use => todo!(),

@@ -250,9 +250,34 @@ pub fn candidates(seq: Sequent) -> Vec<Candidate> {
                     todo!()
                 }
             }
-            Trivial => todo!(),
-            Exfalso => todo!(),
-            ByContra => todo!(),
+            Trivial => {
+                if seq.suc == True || seq.ant.contains(&False) {
+                    let candidate = Candidate::new(tactic, None, None, None, Done);
+                    candidates.push(candidate);
+                    continue;
+                }
+                for fml in seq.ant.iter() {
+                    if seq.ant.contains(&Not(Box::new(fml.clone()))) {
+                        let candidate = Candidate::new(tactic, None, None, None, Done);
+                        candidates.push(candidate);
+                        break;
+                    }
+                }
+            }
+            Exfalso => {
+                let mut seq = seq.clone();
+                seq.suc = False;
+                let candidate = Candidate::new(tactic, None, None, None, Subgoal(seq));
+                candidates.push(candidate);
+            }
+            ByContra => {
+                let mut seq = seq.clone();
+                let fml = Not(Box::new(seq.suc));
+                seq.ant.push(fml);
+                seq.suc = False;
+                let candidate = Candidate::new(tactic, None, None, None, Subgoal(seq));
+                candidates.push(candidate);
+            }
         }
     }
     candidates

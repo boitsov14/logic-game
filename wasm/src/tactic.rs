@@ -118,54 +118,49 @@ pub fn candidates(seq: Sequent) -> Vec<Candidate> {
                 }
             }
             Have => {
-                'outer: for fml1 in seq.ant.iter() {
+                for fml1 in seq.ant.iter() {
                     match fml1 {
                         Not(p) => {
-                            for fml2 in seq.ant.iter() {
-                                if *fml2 == **p {
-                                    let mut seq = seq.clone();
-                                    seq.ant.push(False);
-                                    let candidate = Candidate::new(
-                                        tactic,
-                                        Some(fml1.clone()),
-                                        Some(fml2.clone()),
-                                        None,
-                                        Subgoal(seq),
-                                    );
-                                    candidates.push(candidate);
-                                    continue 'outer;
-                                }
+                            if seq.ant.contains(p) {
+                                let mut seq = seq.clone();
+                                seq.ant.push(False);
+                                let candidate = Candidate::new(
+                                    tactic,
+                                    Some(fml1.clone()),
+                                    Some(*p.clone()),
+                                    None,
+                                    Subgoal(seq),
+                                );
+                                candidates.push(candidate);
                             }
                         }
                         To(p, q) => {
-                            for fml2 in seq.ant.iter() {
-                                if *fml2 == **p {
-                                    let mut seq = seq.clone();
-                                    seq.ant.push(*q.clone());
-                                    let candidate = Candidate::new(
-                                        tactic,
-                                        Some(fml1.clone()),
-                                        Some(fml2.clone()),
-                                        None,
-                                        Subgoal(seq),
-                                    );
-                                    candidates.push(candidate);
-                                    continue 'outer;
-                                }
+                            if seq.ant.contains(p) {
+                                let mut seq = seq.clone();
+                                seq.ant.push(*q.clone());
+                                let candidate = Candidate::new(
+                                    tactic,
+                                    Some(fml1.clone()),
+                                    Some(*p.clone()),
+                                    None,
+                                    Subgoal(seq),
+                                );
+                                candidates.push(candidate);
+                            } else {
+                                let mut seq1 = seq.clone();
+                                let mut seq2 = seq.clone();
+                                seq1.suc = *p.clone();
+                                seq2.ant.retain(|fml0| fml0 != fml1);
+                                seq2.ant.push(*q.clone());
+                                let candidate = Candidate::new(
+                                    tactic,
+                                    Some(fml1.clone()),
+                                    None,
+                                    None,
+                                    Subgoals((seq1, seq2)),
+                                );
+                                candidates.push(candidate);
                             }
-                            let mut seq1 = seq.clone();
-                            let mut seq2 = seq.clone();
-                            seq1.suc = *p.clone();
-                            seq2.ant.retain(|p| p != fml1);
-                            seq2.ant.push(*q.clone());
-                            let candidate = Candidate::new(
-                                tactic,
-                                Some(fml1.clone()),
-                                None,
-                                None,
-                                Subgoals((seq1, seq2)),
-                            );
-                            candidates.push(candidate);
                         }
                         All(x, p) => todo!(),
                         _ => {}
@@ -234,9 +229,27 @@ pub fn candidates(seq: Sequent) -> Vec<Candidate> {
                     }
                 }
             }
-            Left => todo!(),
-            Right => todo!(),
-            Use => todo!(),
+            Left => {
+                if let Or(ref p, _) = seq.suc {
+                    let mut seq = seq.clone();
+                    seq.suc = *p.clone();
+                    let candidate = Candidate::new(tactic, None, None, None, Subgoal(seq));
+                    candidates.push(candidate);
+                }
+            }
+            Right => {
+                if let Or(_, ref q) = seq.suc {
+                    let mut seq = seq.clone();
+                    seq.suc = *q.clone();
+                    let candidate = Candidate::new(tactic, None, None, None, Subgoal(seq));
+                    candidates.push(candidate);
+                }
+            }
+            Use => {
+                if let Ex(x, p) = seq.suc {
+                    todo!()
+                }
+            }
             Trivial => todo!(),
             Exfalso => todo!(),
             ByContra => todo!(),

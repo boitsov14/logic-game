@@ -28,6 +28,6 @@ pub enum Formula {
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, Tsify)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct Sequent {
-    pub ant: Vec<Formula>,
+    pub ants: Vec<Formula>,
     pub suc: Formula,
 }

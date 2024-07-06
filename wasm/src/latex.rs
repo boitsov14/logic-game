@@ -99,7 +99,7 @@ impl std::fmt::Display for Sequent {
         write!(
             f,
             r"{} \vdash {}",
-            self.ant
+            self.ants
                 .iter()
                 .map(|p| p.to_string())
                 .collect_vec()

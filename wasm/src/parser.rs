@@ -81,8 +81,8 @@ peg::parser!( grammar parser() for str {
 
     /// Parses a sequent.
     pub(super) rule sequent() -> Sequent =
-        ant:(formula() ** (_ "," _)) _ turnstile() _ suc:formula() { Sequent { ant, suc } } /
-        p:formula() { Sequent { ant: vec![], suc: p } } /
+        ants:(formula() ** (_ "," _)) _ turnstile() _ suc:formula() { Sequent { ants, suc } } /
+        p:formula() { Sequent { ants: vec![], suc: p } } /
         expected!("sequent")
 
     rule alpha() = [ 'a'..='z' | 'A'..='Z' ]
@@ -230,42 +230,42 @@ mod tests {
         assert_eq!(
             seq("P, Q, R ⊢ S"),
             Sequent {
-                ant: vec![fml("P"), fml("Q"), fml("R")],
+                ants: vec![fml("P"), fml("Q"), fml("R")],
                 suc: fml("S")
             }
         );
         assert_eq!(
             seq("P, Q ⊢ R"),
             Sequent {
-                ant: vec![fml("P"), fml("Q")],
+                ants: vec![fml("P"), fml("Q")],
                 suc: fml("R")
             }
         );
         assert_eq!(
             seq("P ⊢ Q"),
             Sequent {
-                ant: vec![fml("P")],
+                ants: vec![fml("P")],
                 suc: fml("Q")
             }
         );
         assert_eq!(
             seq("P ∧ Q, R ∨ S, ∀xP(x) ⊢ ∃yQ(y)"),
             Sequent {
-                ant: vec![fml("P ∧ Q"), fml("R ∨ S"), fml("∀xP(x)")],
+                ants: vec![fml("P ∧ Q"), fml("R ∨ S"), fml("∀xP(x)")],
                 suc: fml("∃yQ(y)")
             }
         );
         assert_eq!(
             seq("P"),
             Sequent {
-                ant: vec![],
+                ants: vec![],
                 suc: fml("P")
             }
         );
         assert_eq!(
             seq("¬P ∧ Q ∨ R → S ↔ ∀x∃yP(x,y)"),
             Sequent {
-                ant: vec![],
+                ants: vec![],
                 suc: fml("¬P ∧ Q ∨ R → S ↔ ∀x∃yP(x,y)")
             }
         )

@@ -4,12 +4,12 @@ import {
   to_latex_seq,
   Tactic,
   display,
-  Result,
+  apply,
 } from 'wasm'
-import Latex from './Latex'
+import Premises from './Premises'
 
 const App = () => {
-  const s = 'A, B, C |- \t\n\rP\t\n\r∧\t\n\rQ０\t\n\r'
+  const s = 'A, B, not C, not D |- false'
   console.log(s) // eslint-disable-line no-console
   const s1 = s.normalize('NFKC').trim().replace(/\s+/g, ' ')
   console.log(s1) // eslint-disable-line no-console
@@ -23,7 +23,7 @@ const App = () => {
   const byContra = Tactic.ByContra
   const s3 = display(byContra)
   console.log(s3) // eslint-disable-line no-console
-  const result: Result = 'Done' as Result
+  const result = apply(Tactic.Apply, seq)
 
   if (result === 'Done') {
     console.log('Processing Done result') // eslint-disable-line no-console
@@ -38,6 +38,7 @@ const App = () => {
     const formulas = result.Candidates
     console.log(formulas.map((fml1) => to_latex_fml(fml1))) // eslint-disable-line no-console
   }
+  console.log(to_latex_seq(seq)) // eslint-disable-line no-console
 
   return (
     <>
@@ -45,53 +46,42 @@ const App = () => {
         <div class='flex h-screen flex-col'>
           <div class='sticky top-0'>header</div>
           <div class='grow'>
-            {/* sequent */}
-            <div>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      <Latex tex={'P \\land Q \\to P \\and'} />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Latex tex={'P \\land Q \\to P'} />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            {/* sequent end */}
+            <Premises seq={seq} />
           </div>
-          <div class='sticky bottom-0 grid grid-cols-3 p-2'>
+          <div class='sticky bottom-0 grid grid-cols-3 py-2'>
             <div class='p-1'>
-              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 px-4 py-2 text-white focus:from-green-600 focus:to-green-600 active:from-neutral-900 active:to-neutral-700'>
+              <button class='w-full rounded-full bg-gradient-to-b from-neutral-800 to-neutral-950 px-4 py-2 text-sm focus:from-green-600 focus:to-green-600 active:from-neutral-900 active:to-neutral-700'>
+                assumption
+              </button>
+            </div>
+            <div class='p-1'>
+              <button class='w-full rounded-full bg-gradient-to-b from-neutral-800 to-neutral-950 px-4 py-2 text-xs'>
                 button
               </button>
             </div>
             <div class='p-1'>
-              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 px-4 py-2 text-white'>
+              <button
+                class='w-full rounded-full bg-gradient-to-b from-neutral-800 to-neutral-950 px-4 py-2 disabled:from-neutral-800 disabled:to-neutral-800 disabled:text-neutral-500'
+                disabled
+              >
                 button
               </button>
             </div>
             <div class='p-1'>
-              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 px-4 py-2 text-white'>
+              <button
+                class='w-full rounded-full bg-gradient-to-b from-neutral-800 to-neutral-950 px-4 py-2 disabled:from-neutral-950 disabled:to-neutral-950 disabled:text-neutral-500'
+                disabled
+              >
                 button
               </button>
             </div>
             <div class='p-1'>
-              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 px-4 py-2 text-white'>
+              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-black px-4 py-2'>
                 button
               </button>
             </div>
             <div class='p-1'>
-              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 px-4 py-2 text-white'>
-                button
-              </button>
-            </div>
-            <div class='p-1'>
-              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-neutral-900 px-4 py-2 text-white'>
+              <button class='w-full rounded-full bg-gradient-to-b from-neutral-800 to-neutral-950 px-4 py-2'>
                 button
               </button>
             </div>

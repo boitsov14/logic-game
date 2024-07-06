@@ -28,6 +28,11 @@ pub fn display(tactic: Tactic) -> String {
     tactic.to_string()
 }
 
+#[wasm_bindgen]
+pub fn tactics() -> Vec<Tactic> {
+    Tactic::iter().collect()
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, Tsify)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub enum Result {

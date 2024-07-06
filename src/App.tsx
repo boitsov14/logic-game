@@ -4,7 +4,6 @@ import {
   to_latex_seq,
   Tactic,
   display,
-  apply,
 } from 'wasm'
 import Premises from './Premises'
 
@@ -18,27 +17,11 @@ const App = () => {
   console.log(s2) // eslint-disable-line no-console
   const fml = seq.suc
   console.log(to_latex_fml(fml)) // eslint-disable-line no-console
-  const ant = seq.ant.map((x) => to_latex_fml(x))
-  ant.forEach((p) => console.log(p)) // eslint-disable-line no-console
+  const ants = seq.ants.map((x) => to_latex_fml(x))
+  ants.forEach((p) => console.log(p)) // eslint-disable-line no-console
   const byContra = Tactic.ByContra
   const s3 = display(byContra)
   console.log(s3) // eslint-disable-line no-console
-  const result = apply(Tactic.Apply, seq)
-
-  if (result === 'Done') {
-    console.log('Processing Done result') // eslint-disable-line no-console
-  } else if ('Subgoal' in result) {
-    const sequent = result.Subgoal
-    console.log(to_latex_seq(sequent)) // eslint-disable-line no-console
-  } else if ('Subgoals' in result) {
-    const [sequent1, sequent2] = result.Subgoals
-    console.log(to_latex_seq(sequent1)) // eslint-disable-line no-console
-    console.log(to_latex_seq(sequent2)) // eslint-disable-line no-console
-  } else if ('Candidates' in result) {
-    const formulas = result.Candidates
-    console.log(formulas.map((fml1) => to_latex_fml(fml1))) // eslint-disable-line no-console
-  }
-  console.log(to_latex_seq(seq)) // eslint-disable-line no-console
 
   return (
     <>

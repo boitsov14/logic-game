@@ -2,24 +2,31 @@
   "name": "logic-game",
   "version": "0.0.0",
   "description": "",
-  "scripts": {
-    "start": "vite",
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview",
-    "lint": "eslint ./src",
-    "fmt": "prettier --write ./src",
-    "wasm": "wasm-pack build wasm",
-    "clean": "rm -rf node_modules && rm package-lock.json && npm cache clean --force && npm install"
-  },
   "license": "MIT",
+  "scripts": {
+    "build": "vite build",
+    "clean": "rm -rf node_modules && rm package-lock.json && npm cache clean --force && npm install",
+    "dev": "vite",
+    "fmt": "prettier --write ./src",
+    "lint": "eslint ./src",
+    "serve": "vite preview",
+    "start": "vite",
+    "wasm": "wasm-pack build wasm"
+  },
+  "dependencies": {
+    "change-case": "^5.4.4",
+    "katex": "^0.16.11",
+    "solid-js": "^1.8.18",
+    "ts-enum-util": "^4.1.0",
+    "wasm": "file:wasm/pkg"
+  },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.5",
     "@types/katex": "^0.16.7",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
     "autoprefixer": "^10.4.19",
-    "eslint": "^9.6.0",
+    "eslint": "^8.56.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-prettier": "^9.1.0",
@@ -34,10 +41,5 @@
     "vite": "^5.3.3",
     "vite-plugin-solid": "^2.10.2",
     "vite-plugin-wasm": "^3.3.0"
-  },
-  "dependencies": {
-    "katex": "^0.16.11",
-    "solid-js": "^1.8.18",
-    "wasm": "file:wasm/pkg"
   }
 }

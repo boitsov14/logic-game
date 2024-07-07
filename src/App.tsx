@@ -6,8 +6,14 @@ import {
   candidates,
 } from 'wasm'
 import { snakeCase } from 'change-case'
+import { Accessor, createEffect, createSignal, Setter } from 'solid-js'
 import Premises from './Premises'
 import TacticButtons from './TacticButtons'
+
+export interface BaseProps {
+  tactic: Accessor<Tactic | null>
+  setTactic: Setter<Tactic | null>
+}
 
 const App = () => {
   const s = 'A, B, not C, not D |- false'
@@ -31,6 +37,17 @@ const App = () => {
   applicableTactics.forEach((t) => console.log(Tactic[t])) // eslint-disable-line no-console
   console.log(applicableTactics.includes(Tactic.Assumption)) // eslint-disable-line no-console
 
+  const [tactic, setTactic] = createSignal<Tactic | null>(null)
+  const base = { tactic, setTactic }
+
+  createEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log(
+      'The tactic is now',
+      tactic() !== null ? Tactic[tactic()!] : null, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+    )
+  })
+
   return (
     <>
       <div class='container mx-auto px-4'>
@@ -42,7 +59,7 @@ const App = () => {
             <Premises seq={seq} />
           </div>
           <div class='sticky bottom-0 py-2'>
-            <TacticButtons applicableTactics={applicableTactics} />
+            <TacticButtons base={base} applicableTactics={applicableTactics} />
           </div>
         </div>
       </div>

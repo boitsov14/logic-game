@@ -3,9 +3,11 @@ import {
   to_latex_fml,
   to_latex_seq,
   Tactic,
-  display,
+  candidates,
 } from 'wasm'
+import { snakeCase } from 'change-case'
 import Premises from './Premises'
+import TacticButtons from './TacticButtons'
 
 const App = () => {
   const s = 'A, B, not C, not D |- false'
@@ -20,54 +22,27 @@ const App = () => {
   const ants = seq.ants.map((x) => to_latex_fml(x))
   ants.forEach((p) => console.log(p)) // eslint-disable-line no-console
   const byContra = Tactic.ByContra
-  const s3 = display(byContra)
+  const s3 = Tactic[byContra]
   console.log(s3) // eslint-disable-line no-console
+  const s4 = snakeCase(s3)
+  console.log(s4) // eslint-disable-line no-console
+  const cs = candidates(seq)
+  const applicableTactics = cs.map((c) => c.tactic)
+  applicableTactics.forEach((t) => console.log(Tactic[t])) // eslint-disable-line no-console
+  console.log(applicableTactics.includes(Tactic.Assumption)) // eslint-disable-line no-console
 
   return (
     <>
       <div class='container mx-auto px-4'>
         <div class='flex h-screen flex-col'>
-          <div class='sticky top-0'>header</div>
+          <div class='sticky top-0'>
+            <h1>Logic Game</h1>
+          </div>
           <div class='grow'>
             <Premises seq={seq} />
           </div>
-          <div class='sticky bottom-0 grid grid-cols-3 py-2'>
-            <div class='p-1'>
-              <button class='w-full rounded-full bg-gradient-to-b from-neutral-800 to-neutral-950 px-4 py-2 text-sm focus:from-green-600 focus:to-green-600 active:from-neutral-900 active:to-neutral-700'>
-                assumption
-              </button>
-            </div>
-            <div class='p-1'>
-              <button class='w-full rounded-full bg-gradient-to-b from-neutral-800 to-neutral-950 px-4 py-2 text-xs'>
-                button
-              </button>
-            </div>
-            <div class='p-1'>
-              <button
-                class='w-full rounded-full bg-gradient-to-b from-neutral-800 to-neutral-950 px-4 py-2 disabled:from-neutral-800 disabled:to-neutral-800 disabled:text-neutral-500'
-                disabled
-              >
-                button
-              </button>
-            </div>
-            <div class='p-1'>
-              <button
-                class='w-full rounded-full bg-gradient-to-b from-neutral-800 to-neutral-950 px-4 py-2 disabled:from-neutral-950 disabled:to-neutral-950 disabled:text-neutral-500'
-                disabled
-              >
-                button
-              </button>
-            </div>
-            <div class='p-1'>
-              <button class='w-full rounded-full bg-gradient-to-b from-neutral-700 to-black px-4 py-2'>
-                button
-              </button>
-            </div>
-            <div class='p-1'>
-              <button class='w-full rounded-full bg-gradient-to-b from-neutral-800 to-neutral-950 px-4 py-2'>
-                button
-              </button>
-            </div>
+          <div class='sticky bottom-0 py-2'>
+            <TacticButtons applicableTactics={applicableTactics} />
           </div>
         </div>
       </div>

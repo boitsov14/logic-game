@@ -5,8 +5,7 @@ use strum::IntoEnumIterator;
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
-#[derive(Clone, Copy, Debug, strum::Display, strum::EnumIter)]
-#[strum(serialize_all = "snake_case")]
+#[derive(Clone, Copy, Debug, strum::EnumIter)]
 #[wasm_bindgen]
 pub enum Tactic {
     Assumption,
@@ -21,16 +20,6 @@ pub enum Tactic {
     Trivial,
     Exfalso,
     ByContra,
-}
-
-#[wasm_bindgen]
-pub fn display(tactic: Tactic) -> String {
-    tactic.to_string()
-}
-
-#[wasm_bindgen]
-pub fn tactics() -> Vec<Tactic> {
-    Tactic::iter().collect()
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, Tsify)]

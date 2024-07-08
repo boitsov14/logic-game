@@ -58,7 +58,7 @@ impl Candidate {
 }
 
 #[wasm_bindgen]
-pub fn candidates(seq: Sequent) -> Vec<Candidate> {
+pub fn get_candidates(seq: Sequent) -> Vec<Candidate> {
     use self::Result::*;
     use Formula::*;
     use Tactic::*;

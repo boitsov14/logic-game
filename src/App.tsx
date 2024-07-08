@@ -3,8 +3,9 @@ import {
   to_latex_fml,
   to_latex_seq,
   Tactic,
-  candidates,
+  get_candidates,
   Sequent,
+  Candidate,
 } from 'wasm'
 import { snakeCase } from 'change-case'
 import { Accessor, createEffect, createSignal, Setter } from 'solid-js'
@@ -17,6 +18,8 @@ export interface BaseProps {
   setTactic: Setter<Tactic | null>
   seq: Accessor<Sequent>
   setSeq: Setter<Sequent>
+  candidates: Accessor<Candidate[]>
+  setCandidates: Setter<Candidate[]>
 }
 
 const App = () => {
@@ -36,14 +39,19 @@ const App = () => {
   console.log(s3) // eslint-disable-line no-console
   const s4 = snakeCase(s3)
   console.log(s4) // eslint-disable-line no-console
-  const cs = candidates(seq0)
-  const applicableTactics = cs.map((c) => c.tactic)
+  const candidates0 = get_candidates(seq0)
+  const applicableTactics = candidates0.map((c) => c.tactic)
   applicableTactics.forEach((t) => console.log(Tactic[t])) // eslint-disable-line no-console
   console.log(applicableTactics.includes(Tactic.Assumption)) // eslint-disable-line no-console
 
   const [tactic, setTactic] = createSignal<Tactic | null>(null)
   const [seq, setSeq] = createSignal(seq0)
-  const base = { tactic, setTactic, seq, setSeq }
+  const [candidates, setCandidates] = createSignal<Candidate[]>([])
+  const base = { tactic, setTactic, seq, setSeq, candidates, setCandidates }
+
+  createEffect(() => {
+    setCandidates(get_candidates(seq()))
+  })
 
   createEffect(() => {
     // eslint-disable-next-line no-console
@@ -67,7 +75,7 @@ const App = () => {
             <Conclusion base={base} />
           </div>
           <div class='sticky bottom-0 py-2'>
-            <TacticButtons base={base} applicableTactics={applicableTactics} />
+            <TacticButtons base={base} />
           </div>
         </div>
       </div>

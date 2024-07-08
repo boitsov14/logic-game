@@ -5,9 +5,7 @@ import TacticButton from './TacticButton'
 import { BaseProps } from './App'
 import LockedTacticButton from './LockedTacticButton'
 
-const TacticButtons: Component<
-  ParentProps<{ base: BaseProps; applicableTactics: Tactic[] }>
-> = (props) => {
+const TacticButtons: Component<ParentProps<{ base: BaseProps }>> = (props) => {
   return (
     <div class='grid grid-cols-3'>
       <For each={$enum(Tactic).getValues()}>
@@ -26,7 +24,10 @@ const TacticButtons: Component<
               <TacticButton
                 base={props.base}
                 tactic={tactic}
-                applicable={props.applicableTactics.includes(tactic)}
+                applicable={props.base
+                  .candidates()
+                  .map((c) => c.tactic)
+                  .includes(tactic)}
               />
             </Show>
           </div>

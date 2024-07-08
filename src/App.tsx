@@ -9,6 +9,7 @@ import { snakeCase } from 'change-case'
 import { Accessor, createEffect, createSignal, Setter } from 'solid-js'
 import Premises from './Premises'
 import TacticButtons from './TacticButtons'
+import Conclusion from './Conclusion'
 
 export interface BaseProps {
   tactic: Accessor<Tactic | null>
@@ -59,6 +60,7 @@ const App = () => {
             <h1>Premises</h1>
             <Premises seq={seq0} />
             <h1>Conclusion</h1>
+            <Conclusion seq={seq0} />
           </div>
           <div class='sticky bottom-0 py-2'>
             <TacticButtons base={base} applicableTactics={applicableTactics} />

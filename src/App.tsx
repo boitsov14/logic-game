@@ -20,19 +20,19 @@ const App = () => {
   console.log(s) // eslint-disable-line no-console
   const s1 = s.normalize('NFKC').trim().replace(/\s+/g, ' ')
   console.log(s1) // eslint-disable-line no-console
-  const seq = parse_sequent(s1)
-  const s2 = to_latex_seq(seq)
+  const seq0 = parse_sequent(s1)
+  const s2 = to_latex_seq(seq0)
   console.log(s2) // eslint-disable-line no-console
-  const fml = seq.suc
+  const fml = seq0.suc
   console.log(to_latex_fml(fml)) // eslint-disable-line no-console
-  const ants = seq.ants.map((x) => to_latex_fml(x))
+  const ants = seq0.ants.map((x) => to_latex_fml(x))
   ants.forEach((p) => console.log(p)) // eslint-disable-line no-console
   const byContra = Tactic.ByContra
   const s3 = Tactic[byContra]
   console.log(s3) // eslint-disable-line no-console
   const s4 = snakeCase(s3)
   console.log(s4) // eslint-disable-line no-console
-  const cs = candidates(seq)
+  const cs = candidates(seq0)
   const applicableTactics = cs.map((c) => c.tactic)
   applicableTactics.forEach((t) => console.log(Tactic[t])) // eslint-disable-line no-console
   console.log(applicableTactics.includes(Tactic.Assumption)) // eslint-disable-line no-console
@@ -56,7 +56,9 @@ const App = () => {
             <h1>Logic Game</h1>
           </div>
           <div class='grow'>
-            <Premises seq={seq} />
+            <h1>Premises</h1>
+            <Premises seq={seq0} />
+            <h1>Conclusion</h1>
           </div>
           <div class='sticky bottom-0 py-2'>
             <TacticButtons base={base} applicableTactics={applicableTactics} />

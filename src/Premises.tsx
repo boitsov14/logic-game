@@ -1,13 +1,14 @@
 import { Component, ParentProps, For } from 'solid-js'
-import { Sequent, to_latex_fml } from 'wasm'
+import { to_latex_fml } from 'wasm'
 import Latex from './Latex'
+import { BaseProps } from './App'
 
-const Premises: Component<ParentProps<{ seq: Sequent }>> = (props) => {
+const Premises: Component<ParentProps<{ base: BaseProps }>> = (props) => {
   return (
     <>
       <table class='min-w-full border border-gray-700'>
         <tbody>
-          <For each={props.seq.ants}>
+          <For each={props.base.seq().ants}>
             {(ant) => (
               <tr class='border-b border-gray-700'>
                 <td class='p-2'>

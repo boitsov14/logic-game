@@ -4,6 +4,7 @@ import {
   to_latex_seq,
   Tactic,
   candidates,
+  Sequent,
 } from 'wasm'
 import { snakeCase } from 'change-case'
 import { Accessor, createEffect, createSignal, Setter } from 'solid-js'
@@ -14,6 +15,8 @@ import Conclusion from './Conclusion'
 export interface BaseProps {
   tactic: Accessor<Tactic | null>
   setTactic: Setter<Tactic | null>
+  seq: Accessor<Sequent>
+  setSeq: Setter<Sequent>
 }
 
 const App = () => {
@@ -39,7 +42,8 @@ const App = () => {
   console.log(applicableTactics.includes(Tactic.Assumption)) // eslint-disable-line no-console
 
   const [tactic, setTactic] = createSignal<Tactic | null>(null)
-  const base = { tactic, setTactic }
+  const [seq, setSeq] = createSignal(seq0)
+  const base = { tactic, setTactic, seq, setSeq }
 
   createEffect(() => {
     // eslint-disable-next-line no-console
@@ -58,9 +62,9 @@ const App = () => {
           </div>
           <div class='grow'>
             <h1>Premises</h1>
-            <Premises seq={seq0} />
+            <Premises base={base} />
             <h1>Conclusion</h1>
-            <Conclusion seq={seq0} />
+            <Conclusion base={base} />
           </div>
           <div class='sticky bottom-0 py-2'>
             <TacticButtons base={base} applicableTactics={applicableTactics} />

@@ -1,11 +1,12 @@
 import { Component, ParentProps } from 'solid-js'
-import { Sequent, to_latex_fml } from 'wasm'
+import { to_latex_fml } from 'wasm'
 import Latex from './Latex'
+import { BaseProps } from './App'
 
-const Conclusion: Component<ParentProps<{ seq: Sequent }>> = (props) => {
+const Conclusion: Component<ParentProps<{ base: BaseProps }>> = (props) => {
   return (
     <div class='border border-gray-700 p-2'>
-      <Latex tex={to_latex_fml(props.seq.suc)} />
+      <Latex tex={to_latex_fml(props.base.seq().suc)} />
     </div>
   )
 }

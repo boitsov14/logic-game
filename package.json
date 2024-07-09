@@ -7,8 +7,7 @@
     "build": "vite build",
     "clean": "rm -rf node_modules && rm package-lock.json && npm cache clean --force && npm install",
     "dev": "vite",
-    "fmt": "prettier --write ./src",
-    "lint": "eslint ./src",
+    "fmt": "prettier --write ./src && eslint ./src --fix",
     "serve": "vite preview",
     "start": "vite",
     "wasm": "wasm-pack build wasm"

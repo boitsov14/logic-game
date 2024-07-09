@@ -1,24 +1,22 @@
-import { Component, ParentProps, Show } from 'solid-js'
+import { Component, Show } from 'solid-js'
 import { Tactic } from 'wasm'
 import { snakeCase } from 'change-case'
-import TacticButton from './TacticButton'
-import { BaseProps } from './App'
+import logic from './LogicProps'
 
-const LockedTacticButton: Component<
-  ParentProps<{ base: BaseProps; tactic: Tactic; isSelected: boolean }>
-> = (props) => {
+const LockedTacticButton: Component<{ tactic: Tactic }> = (props) => {
   return (
     <Show
-      when={props.isSelected}
+      when={props.tactic === logic.tactic()}
       fallback={
-        <TacticButton
-          base={props.base}
-          tactic={props.tactic}
-          applicable={false}
-        />
+        <button
+          class='w-full rounded-full bg-neutral-800 py-2 text-neutral-500'
+          disabled
+        >
+          {snakeCase(Tactic[props.tactic])}
+        </button>
       }
     >
-      <button class='w-full rounded-full bg-green-600 py-2' disabled>
+      <button class='w-full rounded-full bg-green-700 py-2' disabled>
         {snakeCase(Tactic[props.tactic])}
       </button>
     </Show>

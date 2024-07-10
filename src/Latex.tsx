@@ -1,13 +1,16 @@
 import katex from 'katex'
-import { Component, ParentProps } from 'solid-js'
+import { Component } from 'solid-js'
 import 'katex/dist/katex.min.css'
 
-const Latex: Component<ParentProps<{ tex: string }>> = (props) => {
-  const html = () =>
-    katex.renderToString(props.tex, {
-      throwOnError: false,
-    })
-  return <div innerHTML={html()} /> // eslint-disable-line solid/no-innerhtml
+const Latex: Component<{ tex: string }> = (props) => {
+  return (
+    <div
+      // eslint-disable-next-line solid/no-innerhtml
+      innerHTML={katex.renderToString(props.tex, {
+        throwOnError: false,
+      })}
+    />
+  )
 }
 
 export default Latex

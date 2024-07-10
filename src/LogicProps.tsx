@@ -1,5 +1,5 @@
-import { parse_sequent, Tactic, get_candidates, Sequent, Candidate } from 'wasm'
-import { Accessor, createEffect, createSignal, Setter } from 'solid-js'
+import { parse_sequent, Tactic, Sequent, Candidate } from 'wasm'
+import { Accessor, createSignal, Setter } from 'solid-js'
 
 export interface LogicProps {
   tactic: Accessor<Tactic | null>
@@ -33,20 +33,3 @@ const logic: LogicProps = {
 }
 
 export default logic
-
-createEffect(() => {
-  setCandidates(get_candidates(seq()))
-})
-
-createEffect(() => {
-  setAvailableTactics(candidates().map((c) => c.tactic))
-})
-
-createEffect(() => {
-  const tacticResult = tactic()
-  // eslint-disable-next-line no-console
-  console.log(
-    'The tactic is now',
-    tacticResult !== null ? Tactic[tacticResult] : null,
-  )
-})

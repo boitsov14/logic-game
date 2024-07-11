@@ -4,6 +4,7 @@ import Premises from './Premises'
 import TacticButtons from './TacticButtons'
 import Conclusion from './Conclusion'
 import logic from './LogicProps'
+import GoalTab from './GoalTab'
 
 const App = () => {
   createEffect(() => {
@@ -15,12 +16,9 @@ const App = () => {
   })
 
   createEffect(() => {
+    const tactic = logic.tactic()
     // eslint-disable-next-line no-console
-    console.log(
-      'The tactic is now',
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      logic.tactic() !== null ? Tactic[logic.tactic()!] : null,
-    )
+    console.log('The tactic is now', tactic !== null ? Tactic[tactic] : null)
   })
 
   createEffect(() => {
@@ -33,21 +31,20 @@ const App = () => {
 
   return (
     <>
-      <div class='container mx-auto px-4'>
-        <div class='flex h-screen flex-col'>
-          <div class='sticky top-0'>
-            <h1>Logic Game</h1>
-          </div>
-          <div class='grow'>
-            <h1>Premises</h1>
-            <Premises />
-            <h1>Conclusion</h1>
-            <Conclusion />
-          </div>
-          <div class='sticky bottom-0 py-2'>
-            <TacticButtons />
-          </div>
+      <div class='sticky top-0 z-10 bg-neutral-900 p-2'>
+        <h1 class='text-3xl font-bold'>Logic Game</h1>
+        <div class='container mx-auto px-4'>
+          <GoalTab />
         </div>
+      </div>
+      <div class='container mx-auto px-4'>
+        <h1>Premises</h1>
+        <Premises />
+        <h1>Conclusion</h1>
+        <Conclusion />
+      </div>
+      <div class='container sticky bottom-0 z-10 mx-auto bg-neutral-900 p-2'>
+        <TacticButtons />
       </div>
     </>
   )

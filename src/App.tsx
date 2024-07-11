@@ -38,9 +38,9 @@ const App = () => {
         </div>
       </div>
       <div class='container mx-auto px-4'>
-        <h1>Premises</h1>
+        <h1 class='pb-2 text-2xl font-bold'>Premises</h1>
         <Premises />
-        <h1>Conclusion</h1>
+        <h1 class='py-2 text-2xl font-bold'>Conclusion</h1>
         <Conclusion />
       </div>
       <div class='container sticky bottom-0 z-10 mx-auto bg-neutral-900 p-2'>

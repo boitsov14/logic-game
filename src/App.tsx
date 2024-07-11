@@ -33,7 +33,7 @@ const App = () => {
     <>
       <div class='sticky top-0 z-10 bg-neutral-900 p-2'>
         <h1 class='text-3xl font-bold'>Logic Game</h1>
-        <div class='container mx-auto px-4'>
+        <div class='container mx-auto px-2'>
           <GoalTab />
         </div>
       </div>

@@ -2,34 +2,60 @@ import { parse_sequent, Tactic, Sequent, Candidate } from 'wasm'
 import { Accessor, createSignal, Setter } from 'solid-js'
 
 export interface LogicProps {
-  tactic: Accessor<Tactic | null>
-  setTactic: Setter<Tactic | null>
-  seq: Accessor<Sequent>
-  setSeq: Setter<Sequent>
+  seqs: Accessor<Sequent[]>
+  setSeqs: Setter<Sequent[]>
+  idx: Accessor<number>
+  setIdx: Setter<number>
+  seq: () => Sequent
   candidates: Accessor<Candidate[]>
   setCandidates: Setter<Candidate[]>
-  availableTactics: Accessor<Tactic[]>
-  setAvailableTactics: Setter<Tactic[]>
+  tactic: Accessor<Tactic | null>
+  setTactic: Setter<Tactic | null>
+  tactics: Accessor<Tactic[]>
+  setTactics: Setter<Tactic[]>
 }
 
-const s = 'A, B, not C, not D |- false'
-const s1 = s.normalize('NFKC').trim().replace(/\s+/g, ' ')
-const seq0 = parse_sequent(s1)
+const parse = (s: string) => {
+  return parse_sequent(s.normalize('NFKC').trim().replace(/\s+/g, ' '))
+}
 
-const [tactic, setTactic] = createSignal<Tactic | null>(null)
-const [seq, setSeq] = createSignal(seq0)
+const seqs0: Sequent[] = []
+seqs0.push(parse('A → B, A ⊢ B'))
+seqs0.push(parse('A ∧ B ⊢ B ∧ A'))
+seqs0.push(parse('A ∨ B ⊢ B ∨ A'))
+seqs0.push(
+  parse(
+    'A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A ⊢ A',
+  ),
+)
+seqs0.push(parse('P ⊢ P'))
+seqs0.push(parse('P ⊢ P'))
+seqs0.push(parse('P ⊢ P'))
+seqs0.push(parse('P ⊢ P'))
+seqs0.push(parse('P ⊢ P'))
+
+const [seqs, setSeqs] = createSignal(seqs0)
+const [idx, setIdx] = createSignal(0)
 const [candidates, setCandidates] = createSignal<Candidate[]>([])
-const [availableTactics, setAvailableTactics] = createSignal<Tactic[]>([])
+const [tactic, setTactic] = createSignal<Tactic | null>(null)
+const [tactics, setTactics] = createSignal<Tactic[]>([])
+
+const seq = (): Sequent => {
+  return seqs()[idx()]! // eslint-disable-line @typescript-eslint/no-non-null-assertion
+}
 
 const logic: LogicProps = {
-  tactic,
-  setTactic,
+  seqs,
+  setSeqs,
+  idx,
+  setIdx,
   seq,
-  setSeq,
   candidates,
   setCandidates,
-  availableTactics,
-  setAvailableTactics,
+  tactic,
+  setTactic,
+  tactics,
+  setTactics,
 }
 
 export default logic

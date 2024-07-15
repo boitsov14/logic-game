@@ -12,7 +12,7 @@ const App = () => {
   })
 
   createEffect(() => {
-    logic.setAvailableTactics(logic.candidates().map((c) => c.tactic))
+    logic.setTactics(logic.candidates().map((c) => c.tactic))
   })
 
   createEffect(() => {
@@ -25,7 +25,7 @@ const App = () => {
     // eslint-disable-next-line no-console
     console.log(
       'The available tactics are now',
-      logic.availableTactics().map((t) => Tactic[t]),
+      logic.tactics().map((t) => Tactic[t]),
     )
   })
 

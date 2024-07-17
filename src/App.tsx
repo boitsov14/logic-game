@@ -1,5 +1,5 @@
 import { createEffect } from 'solid-js'
-import { get_candidates, Tactic } from 'wasm'
+import { get_candidates, Tactic, to_latex_fml } from 'wasm'
 import Conclusion from './Conclusion'
 import GoalTab from './GoalTab'
 import logic from './LogicProps'
@@ -12,20 +12,27 @@ const App = () => {
   })
 
   createEffect(() => {
-    logic.setTactics(logic.candidates().map((c) => c.tactic))
-  })
-
-  createEffect(() => {
     const tactic = logic.tactic()
     // eslint-disable-next-line no-console
-    console.log('The tactic is now', tactic !== null ? Tactic[tactic] : null)
+    console.log('Tactic: ', tactic !== null ? Tactic[tactic] : null)
   })
-
   createEffect(() => {
     // eslint-disable-next-line no-console
     console.log(
-      'The available tactics are now',
+      'Available tactics: ',
       logic.tactics().map((t) => Tactic[t]),
+    )
+  })
+  createEffect(() => {
+    const fml1 = logic.fml1()
+    // eslint-disable-next-line no-console
+    console.log('Fml1: ', fml1 !== null ? to_latex_fml(fml1) : null)
+  })
+  createEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log(
+      'Available fml1s: ',
+      logic.fml1s().map((f) => to_latex_fml(f)),
     )
   })
 

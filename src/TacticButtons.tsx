@@ -1,9 +1,9 @@
 import { For, Show } from 'solid-js'
-import { Tactic } from 'wasm'
 import { $enum } from 'ts-enum-util'
-import TacticButton from './TacticButton'
+import { Tactic } from 'wasm'
 import LockedTacticButton from './LockedTacticButton'
 import logic from './LogicProps'
+import TacticButton from './TacticButton'
 
 const TacticButtons = () => {
   return (

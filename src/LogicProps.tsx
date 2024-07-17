@@ -1,5 +1,5 @@
-import { parse_sequent, Tactic, Sequent, Candidate } from 'wasm'
 import { Accessor, createSignal, Setter } from 'solid-js'
+import { parse_sequent, Tactic, Sequent, Candidate } from 'wasm'
 
 export interface LogicProps {
   seqs: Accessor<Sequent[]>

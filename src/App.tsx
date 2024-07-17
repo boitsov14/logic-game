@@ -1,10 +1,10 @@
 import { createEffect } from 'solid-js'
 import { get_candidates, Tactic } from 'wasm'
+import Conclusion from './Conclusion'
+import GoalTab from './GoalTab'
+import logic from './LogicProps'
 import Premises from './Premises'
 import TacticButtons from './TacticButtons'
-import Conclusion from './Conclusion'
-import logic from './LogicProps'
-import GoalTab from './GoalTab'
 
 const App = () => {
   createEffect(() => {

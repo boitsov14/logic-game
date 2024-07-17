@@ -1,6 +1,6 @@
+import { snakeCase } from 'change-case'
 import { Component, Show } from 'solid-js'
 import { Tactic } from 'wasm'
-import { snakeCase } from 'change-case'
 import logic from './LogicProps'
 
 const LockedTacticButton: Component<{ tactic: Tactic }> = (props) => {

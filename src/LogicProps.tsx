@@ -1,19 +1,5 @@
-import { Accessor, createSignal, Setter } from 'solid-js'
+import { createSignal } from 'solid-js'
 import { parse_sequent, Tactic, Sequent, Candidate } from 'wasm'
-
-export interface LogicProps {
-  seqs: Accessor<Sequent[]>
-  setSeqs: Setter<Sequent[]>
-  idx: Accessor<number>
-  setIdx: Setter<number>
-  seq: () => Sequent
-  candidates: Accessor<Candidate[]>
-  setCandidates: Setter<Candidate[]>
-  tactic: Accessor<Tactic | null>
-  setTactic: Setter<Tactic | null>
-  tactics: Accessor<Tactic[]>
-  setTactics: Setter<Tactic[]>
-}
 
 const parse = (s: string) => {
   return parse_sequent(s.normalize('NFKC').trim().replace(/\s+/g, ' '))
@@ -40,11 +26,11 @@ const [candidates, setCandidates] = createSignal<Candidate[]>([])
 const [tactic, setTactic] = createSignal<Tactic | null>(null)
 const [tactics, setTactics] = createSignal<Tactic[]>([])
 
-const seq = (): Sequent => {
+const seq = () => {
   return seqs()[idx()]! // eslint-disable-line @typescript-eslint/no-non-null-assertion
 }
 
-const logic: LogicProps = {
+const logic = {
   seqs,
   setSeqs,
   idx,

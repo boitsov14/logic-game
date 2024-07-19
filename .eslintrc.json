@@ -27,6 +27,7 @@
     "import/extensions": ["error", "ignorePackages", { "tsx": "never" }],
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "unused-imports/no-unused-imports": "warn",
+    "import/no-unused-modules": [2, { "unusedExports": true }],
     "import/order": [
       "warn",
       {

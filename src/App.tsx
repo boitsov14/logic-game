@@ -1,3 +1,4 @@
+import { snakeCase } from 'change-case'
 import { createEffect } from 'solid-js'
 import { get_candidates, Tactic, to_latex_fml } from 'wasm'
 import Conclusion from './Conclusion'
@@ -19,8 +20,11 @@ const App = () => {
   createEffect(() => {
     // eslint-disable-next-line no-console
     console.log(
-      'Available tactics: ',
-      logic.tactics().map((t) => Tactic[t]),
+      'Tactics: ',
+      logic
+        .tactics()
+        .map((t) => snakeCase(Tactic[t]))
+        .join(', '),
     )
   })
   createEffect(() => {
@@ -31,8 +35,11 @@ const App = () => {
   createEffect(() => {
     // eslint-disable-next-line no-console
     console.log(
-      'Available fml1s: ',
-      logic.fml1s().map((f) => to_latex_fml(f)),
+      'Fml1s: ',
+      logic
+        .fml1s()
+        .map((f) => to_latex_fml(f))
+        .join(', '),
     )
   })
 

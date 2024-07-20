@@ -35,7 +35,7 @@ const tactics = () => {
 }
 const fml1s = () => {
   return candidates()
-    .filter((c) => c.tactic === tactic())
+    .filter((c) => c.tactic === tactic() && fml1() === null)
     .map((c) => c.fml1)
     .filter((fml) => fml !== undefined)
 }

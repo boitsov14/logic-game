@@ -1,9 +1,9 @@
-import { For } from 'solid-js'
-import { to_latex_fml } from 'wasm'
+import { Component, For, Show } from 'solid-js'
+import { Formula, to_latex_fml } from 'wasm'
 import Latex from './Latex'
 import logic from './LogicProps'
 
-const Premises = () => {
+const PremisesTable = () => {
   return (
     <table class='min-w-full border border-gray-700'>
       <tbody>
@@ -18,6 +18,67 @@ const Premises = () => {
         </For>
       </tbody>
     </table>
+  )
+}
+
+const PremiseButtonAvailable: Component<{ ant: Formula }> = (props) => {
+  return (
+    <button
+      class='w-full rounded-full bg-gradient-to-b from-neutral-800 to-neutral-950 p-2 active:from-neutral-950 active:to-neutral-800'
+      onClick={() => logic.setFml1(props.ant)}
+    >
+      <Latex tex={to_latex_fml(props.ant)} />
+    </button>
+  )
+}
+
+const PremiseButtonDisabled: Component<{ ant: Formula }> = (props) => {
+  return (
+    <button
+      class='w-full rounded-full bg-neutral-800 p-2 text-neutral-500'
+      disabled
+    >
+      <Latex tex={to_latex_fml(props.ant)} />
+    </button>
+  )
+}
+
+const PremiseButton: Component<{ ant: Formula }> = (props) => {
+  return (
+    <Show
+      when={logic
+        .fml1s()
+        .some((c) => JSON.stringify(c) === JSON.stringify(props.ant))}
+      fallback={<PremiseButtonDisabled ant={props.ant} />}
+    >
+      <PremiseButtonAvailable ant={props.ant} />
+    </Show>
+  )
+}
+
+const PremisesButtons = () => {
+  return (
+    <table class='min-w-full border border-gray-700'>
+      <tbody>
+        <For each={logic.seq().ants}>
+          {(ant) => (
+            <tr class='border-b border-gray-700'>
+              <td class='p-2'>
+                <PremiseButton ant={ant} />
+              </td>
+            </tr>
+          )}
+        </For>
+      </tbody>
+    </table>
+  )
+}
+
+const Premises = () => {
+  return (
+    <Show when={logic.fml1s().length === 0} fallback={<PremisesButtons />}>
+      <PremisesTable />
+    </Show>
   )
 }
 

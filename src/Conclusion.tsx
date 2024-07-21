@@ -1,6 +1,6 @@
 import { to_latex_fml } from 'wasm'
 import Latex from './Latex'
-import logic from './LogicProps'
+import logic from './Logic'
 
 const Conclusion = () => {
   return (

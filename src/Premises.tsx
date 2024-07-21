@@ -1,7 +1,7 @@
 import { Component, For, Show } from 'solid-js'
 import { Formula, to_latex_fml } from 'wasm'
 import Latex from './Latex'
-import logic from './LogicProps'
+import logic from './Logic'
 
 const PremisesTable = () => {
   return (

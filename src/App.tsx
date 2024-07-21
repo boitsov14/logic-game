@@ -1,6 +1,6 @@
 import Conclusion from './Conclusion'
-import GoalTabs from './GoalTab'
-import { consoleLogState, createEffectLogic } from './LogicProps'
+import GoalTabs from './GoalTabs'
+import { consoleLogState, createEffectLogic } from './Logic'
 import Premises from './Premises'
 import TacticButtons from './TacticButtons'
 

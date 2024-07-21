@@ -2,7 +2,7 @@ import { snakeCase } from 'change-case'
 import { Component, For, Show } from 'solid-js'
 import { $enum } from 'ts-enum-util'
 import { Tactic } from 'wasm'
-import logic from './LogicProps'
+import logic from './Logic'
 
 const TacticButtonAvailable: Component<{ tactic: Tactic }> = (props) => {
   return (

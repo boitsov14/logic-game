@@ -59,7 +59,7 @@ const TacticButtonSomeSelected: Component<{ tactic: Tactic }> = (props) => {
 const TacticButton: Component<{ tactic: Tactic }> = (props) => {
   return (
     <Show
-      when={logic.tactic() === null}
+      when={logic.tactic() === undefined}
       fallback={<TacticButtonSomeSelected tactic={props.tactic} />}
     >
       <TacticButtonNoneSelected tactic={props.tactic} />

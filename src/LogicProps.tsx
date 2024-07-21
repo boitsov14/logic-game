@@ -32,9 +32,9 @@ seqs0.push(
 const [seqs, setSeqs] = createSignal(seqs0)
 const [idx, setIdx] = createSignal(0)
 const [candidates, setCandidates] = createSignal<Candidate[]>([])
-const [tactic, setTactic] = createSignal<Tactic | null>(null)
-const [fml1, setFml1] = createSignal<Formula | null>(null)
-const [fml2, setFml2] = createSignal<Formula | null>(null)
+const [tactic, setTactic] = createSignal<Tactic>()
+const [fml1, setFml1] = createSignal<Formula>()
+const [fml2, setFml2] = createSignal<Formula>()
 
 const seq = () => {
   return seqs()[idx()]!
@@ -44,7 +44,7 @@ const tactics = () => {
 }
 const fml1s = () => {
   return candidates()
-    .filter((c) => c.tactic === tactic() && fml1() === null)
+    .filter((c) => c.tactic === tactic() && fml1() === undefined)
     .map((c) => c.fml1)
     .filter((fml) => fml !== undefined)
 }
@@ -64,7 +64,10 @@ export const createEffectLogic = () => {
 export const consoleLogState = () => {
   createEffect(() => {
     const tacticState = tactic()
-    console.log('tactic:', tacticState !== null ? Tactic[tacticState] : null)
+    console.log(
+      'tactic:',
+      tacticState !== undefined ? snakeCase(Tactic[tacticState]) : '',
+    )
   })
   createEffect(() => {
     console.log(
@@ -76,7 +79,7 @@ export const consoleLogState = () => {
   })
   createEffect(() => {
     const fml1State = fml1()
-    console.log('fml1:', fml1State !== null ? to_latex_fml(fml1State) : null)
+    console.log('fml1:', fml1State !== undefined ? to_latex_fml(fml1State) : '')
   })
   createEffect(() => {
     console.log(

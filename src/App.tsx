@@ -1,5 +1,5 @@
 import Conclusion from './Conclusion'
-import GoalTab from './GoalTab'
+import GoalTabs from './GoalTab'
 import { consoleLogState, createEffectLogic } from './LogicProps'
 import Premises from './Premises'
 import TacticButtons from './TacticButtons'
@@ -11,9 +11,9 @@ const App = () => {
   return (
     <div class='flex min-h-screen flex-col'>
       <header class='sticky top-0 z-10 bg-neutral-900 p-2'>
-        <h1 class='text-3xl font-bold'>Logic Game</h1>
+        <h1 class='pb-2 text-3xl font-bold'>Logic Game</h1>
         <div class='container mx-auto px-2'>
-          <GoalTab />
+          <GoalTabs />
         </div>
       </header>
       <main class='container mx-auto grow px-4'>

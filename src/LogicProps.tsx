@@ -23,11 +23,11 @@ seqs0.push(
     'A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A ⊢ A',
   ),
 )
-seqs0.push(parse('P ⊢ P'))
-seqs0.push(parse('P ⊢ P'))
-seqs0.push(parse('P ⊢ P'))
-seqs0.push(parse('P ⊢ P'))
-seqs0.push(parse('P ⊢ P'))
+// seqs0.push(parse('P ⊢ P'))
+// seqs0.push(parse('P ⊢ P'))
+// seqs0.push(parse('P ⊢ P'))
+// seqs0.push(parse('P ⊢ P'))
+// seqs0.push(parse('P ⊢ P'))
 
 const [seqs, setSeqs] = createSignal(seqs0)
 const [idx, setIdx] = createSignal(0)

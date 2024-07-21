@@ -1,5 +1,14 @@
-import { createSignal } from 'solid-js'
-import { parse_sequent, Tactic, Sequent, Candidate, Formula } from 'wasm'
+import { snakeCase } from 'change-case'
+import { createEffect, createSignal } from 'solid-js'
+import {
+  parse_sequent,
+  Tactic,
+  Sequent,
+  Candidate,
+  Formula,
+  to_latex_fml,
+  get_candidates,
+} from 'wasm'
 
 const parse = (s: string) => {
   return parse_sequent(s.normalize('NFKC').trim().replace(/\s+/g, ' '))
@@ -28,7 +37,7 @@ const [fml1, setFml1] = createSignal<Formula | null>(null)
 const [fml2, setFml2] = createSignal<Formula | null>(null)
 
 const seq = () => {
-  return seqs()[idx()]! // eslint-disable-line @typescript-eslint/no-non-null-assertion
+  return seqs()[idx()]!
 }
 const tactics = () => {
   return candidates().map((c) => c.tactic)
@@ -44,6 +53,39 @@ const fml2s = () => {
     .filter((c) => c.tactic === tactic() && c.fml1 === fml1())
     .map((c) => c.fml2)
     .filter((fml) => fml !== undefined)
+}
+
+export const createEffectLogic = () => {
+  createEffect(() => {
+    setCandidates(get_candidates(seq()))
+  })
+}
+
+export const consoleLogState = () => {
+  createEffect(() => {
+    const tacticState = tactic()
+    console.log('tactic:', tacticState !== null ? Tactic[tacticState] : null)
+  })
+  createEffect(() => {
+    console.log(
+      'tactics:',
+      tactics()
+        .map((t) => snakeCase(Tactic[t]))
+        .join(', '),
+    )
+  })
+  createEffect(() => {
+    const fml1State = fml1()
+    console.log('fml1:', fml1State !== null ? to_latex_fml(fml1State) : null)
+  })
+  createEffect(() => {
+    console.log(
+      'fml1s:',
+      fml1s()
+        .map((f) => to_latex_fml(f))
+        .join(', '),
+    )
+  })
 }
 
 const logic = {

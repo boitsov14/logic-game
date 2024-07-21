@@ -1,47 +1,12 @@
-import { snakeCase } from 'change-case'
-import { createEffect } from 'solid-js'
-import { get_candidates, Tactic, to_latex_fml } from 'wasm'
 import Conclusion from './Conclusion'
 import GoalTab from './GoalTab'
-import logic from './LogicProps'
+import { consoleLogState, createEffectLogic } from './LogicProps'
 import Premises from './Premises'
 import TacticButtons from './TacticButtons'
 
 const App = () => {
-  createEffect(() => {
-    logic.setCandidates(get_candidates(logic.seq()))
-  })
-
-  createEffect(() => {
-    const tactic = logic.tactic()
-    // eslint-disable-next-line no-console
-    console.log('Tactic: ', tactic !== null ? Tactic[tactic] : null)
-  })
-  createEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(
-      'Tactics: ',
-      logic
-        .tactics()
-        .map((t) => snakeCase(Tactic[t]))
-        .join(', '),
-    )
-  })
-  createEffect(() => {
-    const fml1 = logic.fml1()
-    // eslint-disable-next-line no-console
-    console.log('Fml1: ', fml1 !== null ? to_latex_fml(fml1) : null)
-  })
-  createEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(
-      'Fml1s: ',
-      logic
-        .fml1s()
-        .map((f) => to_latex_fml(f))
-        .join(', '),
-    )
-  })
+  createEffectLogic()
+  consoleLogState()
 
   return (
     <div class='flex min-h-screen flex-col'>

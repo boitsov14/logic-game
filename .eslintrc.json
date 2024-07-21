@@ -24,6 +24,8 @@
     "unused-imports"
   ],
   "rules": {
+    "no-console": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "import/extensions": ["error", "ignorePackages", { "tsx": "never" }],
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "unused-imports/no-unused-imports": "warn",

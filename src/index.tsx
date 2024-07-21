@@ -5,4 +5,4 @@ import App from './App'
 
 const root = document.getElementById('root')
 
-render(() => <App />, root!) // eslint-disable-line @typescript-eslint/no-non-null-assertion
+render(() => <App />, root!)

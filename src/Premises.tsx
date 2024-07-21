@@ -3,7 +3,7 @@ import { Formula, to_latex_fml } from 'wasm'
 import Latex from './Latex'
 import logic from './Logic'
 
-const PremisesTable = () => {
+const PremiseTable = () => {
   return (
     <table class='w-full border border-gray-700'>
       <tbody>
@@ -56,7 +56,7 @@ const PremiseButton: Component<{ ant: Formula }> = (props) => {
   )
 }
 
-const PremisesButtons = () => {
+const PremiseButtons = () => {
   return (
     <table class='w-full'>
       <tbody>
@@ -76,8 +76,8 @@ const PremisesButtons = () => {
 
 const Premises = () => {
   return (
-    <Show when={logic.fml1s().length === 0} fallback={<PremisesButtons />}>
-      <PremisesTable />
+    <Show when={logic.fml1s().length === 0} fallback={<PremiseButtons />}>
+      <PremiseTable />
     </Show>
   )
 }

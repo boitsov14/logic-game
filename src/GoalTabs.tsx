@@ -1,5 +1,5 @@
 import { Component, Index, Show } from 'solid-js'
-import logic from './LogicProps'
+import logic from './Logic'
 
 const GoalTabSelected: Component<{ i: number }> = (props) => {
   return (

@@ -18,13 +18,13 @@ const parse = (s: string) => {
 const seqs0: Sequent[] = []
 seqs0.push(parse('A → B, A ⊢ B'))
 seqs0.push(parse('A ∧ B ⊢ B ∧ A'))
-seqs0.push(parse('A ∨ B ⊢ B ∨ A'))
+// seqs0.push(parse('A ∨ B ⊢ B ∨ A'))
 seqs0.push(
   parse(
     'A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A ⊢ A',
   ),
 )
-// seqs0.push(parse('P ⊢ P'))
+seqs0.push(parse('⊢ P → P'))
 // seqs0.push(parse('P ⊢ P'))
 // seqs0.push(parse('P ⊢ P'))
 // seqs0.push(parse('P ⊢ P'))

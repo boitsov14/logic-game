@@ -1,6 +1,7 @@
+import { Show } from 'solid-js'
 import Conclusion from './Conclusion'
 import GoalTabs from './GoalTabs'
-import { consoleLogState, createEffectLogic } from './Logic'
+import logic, { consoleLogState, createEffectLogic } from './Logic'
 import Premises from './Premises'
 import TacticButtons from './TacticButtons'
 
@@ -17,9 +18,11 @@ const App = () => {
         </div>
       </header>
       <main class='container mx-auto grow px-4'>
-        <h2 class='pb-2 text-2xl font-bold'>Premises</h2>
-        <Premises />
-        <h2 class='py-2 text-2xl font-bold'>Conclusion</h2>
+        <Show when={logic.seq().ants.length > 0}>
+          <h2 class='pb-2 text-2xl font-bold'>Premises</h2>
+          <Premises />
+        </Show>
+        <h2 class='pb-2 text-2xl font-bold'>Conclusion</h2>
         <Conclusion />
       </main>
       <footer class='container sticky bottom-0 z-10 mx-auto bg-neutral-900 p-2'>

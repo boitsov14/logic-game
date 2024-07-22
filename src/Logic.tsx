@@ -50,7 +50,11 @@ const fml1s = () => {
 }
 const fml2s = () => {
   return candidates()
-    .filter((c) => c.tactic === tactic() && c.fml1 === fml1())
+    .filter(
+      (c) =>
+        c.tactic === tactic() &&
+        JSON.stringify(c.fml1) === JSON.stringify(fml1()),
+    )
     .map((c) => c.fml2)
     .filter((fml) => fml !== undefined)
 }
@@ -58,6 +62,13 @@ const fml2s = () => {
 export const createEffectLogic = () => {
   createEffect(() => {
     setCandidates(get_candidates(seq()))
+  })
+  createEffect(() => {
+    seqs()
+    idx()
+    setTactic(undefined)
+    setFml1(undefined)
+    setFml2(undefined)
   })
 }
 
@@ -85,6 +96,18 @@ export const consoleLogState = () => {
     console.log(
       'fml1s:',
       fml1s()
+        .map((f) => to_latex_fml(f))
+        .join(', '),
+    )
+  })
+  createEffect(() => {
+    const fml2State = fml2()
+    console.log('fml2:', fml2State !== undefined ? to_latex_fml(fml2State) : '')
+  })
+  createEffect(() => {
+    console.log(
+      'fml2s:',
+      fml2s()
         .map((f) => to_latex_fml(f))
         .join(', '),
     )

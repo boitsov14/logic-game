@@ -8,6 +8,7 @@ import {
   Formula,
   to_latex_fml,
   get_candidates,
+  Result,
 } from 'wasm'
 
 const parse = (s: string) => {
@@ -63,6 +64,13 @@ const fml2s = () => {
     .filter((fml) => fml !== undefined)
 }
 
+const setNewSeqs = (result: Result) => {
+  if (result === 'Done') {
+    setSeqs(seqs().filter((_, i) => i !== idx()))
+    setIdx(0)
+  }
+}
+
 export const createEffectLogic = () => {
   createEffect(() => {
     setCandidates(get_candidates(seq()))
@@ -73,6 +81,21 @@ export const createEffectLogic = () => {
     setTactic(undefined)
     setFml1(undefined)
     setFml2(undefined)
+  })
+  createEffect(() => {
+    if (
+      tactic() !== undefined &&
+      fml1() === undefined &&
+      fml2() === undefined
+    ) {
+      const result = candidates().filter(
+        (c) =>
+          c.tactic === tactic() && c.fml1 === undefined && c.fml2 === undefined,
+      )[0]?.result
+      if (result !== undefined) {
+        setNewSeqs(result)
+      }
+    }
   })
 }
 

@@ -3,7 +3,10 @@ import logic from './Logic'
 
 const GoalTabSelected: Component<{ i: number }> = (props) => {
   return (
-    <button class='flex-none text-nowrap bg-blue-800 p-2' disabled>
+    <button
+      class='flex-none select-none text-nowrap rounded-full bg-blue-800 px-3 py-2'
+      disabled
+    >
       Goal {props.i + 1}
     </button>
   )
@@ -12,7 +15,7 @@ const GoalTabSelected: Component<{ i: number }> = (props) => {
 const GoalTabAvailable: Component<{ i: number }> = (props) => {
   return (
     <button
-      class='flex-none select-none text-nowrap bg-gradient-to-b from-neutral-800 to-neutral-950 p-2 active:from-neutral-950 active:to-neutral-800'
+      class='flex-none select-none text-nowrap rounded-full bg-gradient-to-b from-neutral-700 to-black px-3 py-2 active:from-neutral-950 active:to-neutral-800'
       onClick={() => logic.setIdx(props.i)}
     >
       Goal {props.i + 1}

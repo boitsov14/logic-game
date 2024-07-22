@@ -44,7 +44,10 @@ const tactics = () => {
 }
 const fml1s = () => {
   return candidates()
-    .filter((c) => c.tactic === tactic() && fml1() === undefined)
+    .filter(
+      (c) =>
+        c.tactic === tactic() && fml1() === undefined && fml2() === undefined,
+    )
     .map((c) => c.fml1)
     .filter((fml) => fml !== undefined)
 }
@@ -53,7 +56,8 @@ const fml2s = () => {
     .filter(
       (c) =>
         c.tactic === tactic() &&
-        JSON.stringify(c.fml1) === JSON.stringify(fml1()),
+        JSON.stringify(c.fml1) === JSON.stringify(fml1()) &&
+        fml2() === undefined,
     )
     .map((c) => c.fml2)
     .filter((fml) => fml !== undefined)

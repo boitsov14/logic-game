@@ -24,8 +24,25 @@ const PremiseTable = () => {
 const PremiseButtonAvailable: Component<{ ant: Formula }> = (props) => {
   return (
     <button
-      class='w-full bg-gradient-to-b from-neutral-800 to-neutral-950 p-2 text-start active:from-neutral-950 active:to-neutral-800'
-      onClick={() => logic.setFml1(props.ant)}
+      class='w-full select-none rounded-full bg-gradient-to-b from-neutral-700 to-black px-4 py-2 text-start active:from-black active:to-neutral-700'
+      onClick={() => {
+        if (logic.fml1() === undefined) {
+          logic.setFml1(props.ant)
+        } else if (logic.fml2() === undefined) {
+          logic.setFml2(props.ant)
+        }
+      }}
+    >
+      <Latex tex={to_latex_fml(props.ant)} />
+    </button>
+  )
+}
+
+const PremiseButtonSelected: Component<{ ant: Formula }> = (props) => {
+  return (
+    <button
+      class='w-full select-none rounded-full bg-green-700 px-4 py-2 text-start'
+      disabled
     >
       <Latex tex={to_latex_fml(props.ant)} />
     </button>
@@ -35,7 +52,7 @@ const PremiseButtonAvailable: Component<{ ant: Formula }> = (props) => {
 const PremiseButtonDisabled: Component<{ ant: Formula }> = (props) => {
   return (
     <button
-      class='w-full bg-neutral-800 p-2 text-start text-neutral-500'
+      class='w-full select-none rounded-full bg-neutral-800 px-4 py-2 text-start text-neutral-500'
       disabled
     >
       <Latex tex={to_latex_fml(props.ant)} />
@@ -46,12 +63,25 @@ const PremiseButtonDisabled: Component<{ ant: Formula }> = (props) => {
 const PremiseButton: Component<{ ant: Formula }> = (props) => {
   return (
     <Show
-      when={logic
-        .fml1s()
-        .some((c) => JSON.stringify(c) === JSON.stringify(props.ant))}
-      fallback={<PremiseButtonDisabled ant={props.ant} />}
+      when={JSON.stringify(props.ant) === JSON.stringify(logic.fml1())}
+      fallback={
+        <Show
+          when={
+            logic.fml1() === undefined
+              ? logic
+                  .fml1s()
+                  .some((c) => JSON.stringify(c) === JSON.stringify(props.ant))
+              : logic
+                  .fml2s()
+                  .some((c) => JSON.stringify(c) === JSON.stringify(props.ant))
+          }
+          fallback={<PremiseButtonDisabled ant={props.ant} />}
+        >
+          <PremiseButtonAvailable ant={props.ant} />
+        </Show>
+      }
     >
-      <PremiseButtonAvailable ant={props.ant} />
+      <PremiseButtonSelected ant={props.ant} />
     </Show>
   )
 }
@@ -76,7 +106,10 @@ const PremiseButtons = () => {
 
 const Premises = () => {
   return (
-    <Show when={logic.fml1s().length === 0} fallback={<PremiseButtons />}>
+    <Show
+      when={logic.fml1s().length === 0 && logic.fml2s().length === 0}
+      fallback={<PremiseButtons />}
+    >
       <PremiseTable />
     </Show>
   )

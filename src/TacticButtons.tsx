@@ -7,7 +7,7 @@ import logic from './Logic'
 const TacticButtonAvailable: Component<{ tactic: Tactic }> = (props) => {
   return (
     <button
-      class='w-full rounded-full bg-gradient-to-b from-neutral-800 to-neutral-950 py-2 active:from-neutral-950 active:to-neutral-800'
+      class='w-full select-none rounded-full bg-gradient-to-b from-neutral-700 to-black py-2 active:from-black active:to-neutral-700'
       onClick={() => logic.setTactic(props.tactic)}
     >
       {snakeCase(Tactic[props.tactic])}
@@ -17,7 +17,7 @@ const TacticButtonAvailable: Component<{ tactic: Tactic }> = (props) => {
 
 const TacticButtonSelected: Component<{ tactic: Tactic }> = (props) => {
   return (
-    <button class='w-full rounded-full bg-green-700 py-2' disabled>
+    <button class='w-full select-none rounded-full bg-green-700 py-2' disabled>
       {snakeCase(Tactic[props.tactic])}
     </button>
   )
@@ -26,7 +26,7 @@ const TacticButtonSelected: Component<{ tactic: Tactic }> = (props) => {
 const TacticButtonDisabled: Component<{ tactic: Tactic }> = (props) => {
   return (
     <button
-      class='w-full rounded-full bg-neutral-800 py-2 text-neutral-500'
+      class='w-full select-none rounded-full bg-neutral-800 py-2 text-neutral-500'
       disabled
     >
       {snakeCase(Tactic[props.tactic])}

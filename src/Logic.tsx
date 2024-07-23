@@ -68,6 +68,16 @@ const setNewSeqs = (result: Result) => {
   if (result === 'Done') {
     setSeqs(seqs().filter((_, i) => i !== idx()))
     setIdx(0)
+  } else if ('Subgoal' in result) {
+    const newSeqs = [...seqs()]
+    newSeqs[idx()] = result.Subgoal
+    setSeqs(newSeqs)
+    console.log('seq:', seqs()[idx()])
+  } else if ('Subgoals' in result) {
+    const newSeqs = [...seqs()]
+    const [subgoal1, subgoal2] = result.Subgoals
+    newSeqs.splice(idx(), 1, subgoal1, subgoal2)
+    setSeqs(newSeqs)
   }
 }
 
@@ -91,6 +101,40 @@ export const createEffectLogic = () => {
       const result = candidates().filter(
         (c) =>
           c.tactic === tactic() && c.fml1 === undefined && c.fml2 === undefined,
+      )[0]?.result
+      if (result !== undefined) {
+        setNewSeqs(result)
+      }
+    }
+  })
+  createEffect(() => {
+    if (
+      tactic() !== undefined &&
+      fml1() !== undefined &&
+      fml2() === undefined
+    ) {
+      const result = candidates().filter(
+        (c) =>
+          c.tactic === tactic() &&
+          JSON.stringify(c.fml1) === JSON.stringify(fml1()) &&
+          c.fml2 === undefined,
+      )[0]?.result
+      if (result !== undefined) {
+        setNewSeqs(result)
+      }
+    }
+  })
+  createEffect(() => {
+    if (
+      tactic() !== undefined &&
+      fml1() !== undefined &&
+      fml2() !== undefined
+    ) {
+      const result = candidates().filter(
+        (c) =>
+          c.tactic === tactic() &&
+          JSON.stringify(c.fml1) === JSON.stringify(fml1()) &&
+          JSON.stringify(c.fml2) === JSON.stringify(fml2()),
       )[0]?.result
       if (result !== undefined) {
         setNewSeqs(result)

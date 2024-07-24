@@ -69,12 +69,12 @@ const setNewSeqs = (result: Result) => {
     setSeqs(seqs().filter((_, i) => i !== idx()))
     setIdx(0)
   } else if ('Subgoal' in result) {
-    const newSeqs = [...seqs()]
+    const newSeqs = structuredClone(seqs())
     newSeqs[idx()] = result.Subgoal
     setSeqs(newSeqs)
     console.log('seq:', seqs()[idx()])
   } else if ('Subgoals' in result) {
-    const newSeqs = [...seqs()]
+    const newSeqs = structuredClone(seqs())
     const [subgoal1, subgoal2] = result.Subgoals
     newSeqs.splice(idx(), 1, subgoal1, subgoal2)
     setSeqs(newSeqs)
@@ -105,10 +105,7 @@ export const createEffectLogic = () => {
       if (result !== undefined) {
         setNewSeqs(result)
       }
-    }
-  })
-  createEffect(() => {
-    if (
+    } else if (
       tactic() !== undefined &&
       fml1() !== undefined &&
       fml2() === undefined
@@ -122,10 +119,7 @@ export const createEffectLogic = () => {
       if (result !== undefined) {
         setNewSeqs(result)
       }
-    }
-  })
-  createEffect(() => {
-    if (
+    } else if (
       tactic() !== undefined &&
       fml1() !== undefined &&
       fml2() !== undefined
@@ -143,6 +137,7 @@ export const createEffectLogic = () => {
   })
 }
 
+// eslint-disable-next-line import/no-unused-modules
 export const consoleLogState = () => {
   createEffect(() => {
     const tacticState = tactic()

@@ -187,12 +187,9 @@ export const consoleLogState = () => {
 
 const logic = {
   seqs,
-  setSeqs,
   idx,
   setIdx,
   seq,
-  candidates,
-  setCandidates,
   tactics,
   tactic,
   setTactic,

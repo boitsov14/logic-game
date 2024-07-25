@@ -83,7 +83,11 @@ const setNewSeqs = (result: Result) => {
 
 export const createEffectLogic = () => {
   createEffect(() => {
-    setCandidates(get_candidates(seq()))
+    if (seqs().length === 0) {
+      setCandidates([])
+    } else {
+      setCandidates(get_candidates(seq()))
+    }
   })
   createEffect(() => {
     seqs()

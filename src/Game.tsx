@@ -5,7 +5,7 @@ import logic, { consoleLogState, createEffectLogic } from './Logic'
 import Premises from './Premises'
 import TacticButtons from './TacticButtons'
 
-const App = () => {
+const Game = () => {
   createEffectLogic()
   consoleLogState()
 
@@ -49,4 +49,4 @@ const App = () => {
   )
 }
 
-export default App
+export default Game

@@ -1,11 +1,14 @@
-import { Show } from 'solid-js'
+import { onMount, Show } from 'solid-js'
 import Conclusion from './Conclusion'
 import GoalTabs from './GoalTabs'
-import logic, { consoleLogState, createEffectLogic } from './Logic'
+import logic, { consoleLogState, createEffectLogic, initSeq } from './Logic'
 import Premises from './Premises'
 import TacticButtons from './TacticButtons'
 
 const Game = () => {
+  onMount(() => {
+    initSeq()
+  })
   createEffectLogic()
   consoleLogState()
 
@@ -15,7 +18,7 @@ const Game = () => {
         <div class='mb-2 flex justify-between'>
           <h1 class='text-3xl font-bold'>Logic Game</h1>
           <a
-            href='#'
+            href='/'
             class='rounded-full bg-gradient-to-b from-neutral-700 to-black px-4 py-2 active:from-black active:to-neutral-700'
           >
             Home

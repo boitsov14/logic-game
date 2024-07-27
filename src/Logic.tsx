@@ -15,22 +15,7 @@ const parse = (s: string) => {
   return parse_sequent(s.normalize('NFKC').trim().replace(/\s+/g, ' '))
 }
 
-const seqs0: Sequent[] = []
-seqs0.push(parse('A → B, A ⊢ B'))
-seqs0.push(parse('A ∧ B ⊢ B ∧ A'))
-// seqs0.push(parse('A ∨ B ⊢ B ∨ A'))
-seqs0.push(
-  parse(
-    'A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A, A ⊢ A',
-  ),
-)
-seqs0.push(parse('⊢ P → P'))
-// seqs0.push(parse('P ⊢ P'))
-// seqs0.push(parse('P ⊢ P'))
-// seqs0.push(parse('P ⊢ P'))
-// seqs0.push(parse('P ⊢ P'))
-
-const [seqs, setSeqs] = createSignal(seqs0)
+const [seqs, setSeqs] = createSignal<Sequent[]>([])
 const [idx, setIdx] = createSignal(0)
 const [candidates, setCandidates] = createSignal<Candidate[]>([])
 const [tactic, setTactic] = createSignal<Tactic>()
@@ -62,6 +47,22 @@ const fml2s = () => {
     )
     .map((c) => c.fml2)
     .filter((fml) => fml !== undefined)
+}
+
+export const initSeq = () => {
+  const params = new URLSearchParams(window.location.search)
+  const seq0 = params.get('seq')
+  if (seq0 !== null) {
+    try {
+      setSeqs([parse(seq0)])
+    } catch (e) {
+      // TODO
+      console.error(e)
+    }
+  } else {
+    // TODO
+    console.error('seq is not found')
+  }
 }
 
 const setNewSeqs = (result: Result) => {

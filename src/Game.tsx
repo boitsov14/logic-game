@@ -14,7 +14,7 @@ const Game = () => {
 
   return (
     <div class='flex min-h-screen flex-col'>
-      <header class='sticky top-0 z-10 bg-neutral-900 p-2'>
+      <header class='sticky top-0 z-10 bg-neutral-900 px-4 py-2'>
         <div class='mb-2 flex justify-between'>
           <h1 class='text-3xl font-bold'>Logic Game</h1>
           <a

@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from '@solidjs/router'
 import { snakeCase } from 'change-case'
 import { createEffect, createSignal } from 'solid-js'
 import {
@@ -11,10 +12,7 @@ import {
   Result,
 } from 'wasm'
 
-const parse = (s: string) => {
-  return parse_sequent(s.normalize('NFKC').trim().replace(/\s+/g, ' '))
-}
-
+const [parseErr, setParseErr] = createSignal('')
 const [seqs, setSeqs] = createSignal<Sequent[]>([])
 const [idx, setIdx] = createSignal(0)
 const [candidates, setCandidates] = createSignal<Candidate[]>([])
@@ -50,18 +48,18 @@ const fml2s = () => {
 }
 
 export const initSeq = () => {
-  const params = new URLSearchParams(window.location.search)
-  const seq0 = params.get('seq')
-  if (seq0 !== null) {
-    try {
-      setSeqs([parse(seq0)])
-    } catch (e) {
-      // TODO
-      console.error(e)
-    }
-  } else {
-    // TODO
-    console.error('seq is not found')
+  const navigate = useNavigate()
+  const params = useParams()
+  const str = decodeURIComponent(params['seq']!)
+    .normalize('NFKC')
+    .replace(/\s+/g, ' ')
+    .trim()
+  try {
+    setSeqs([parse_sequent(str)])
+    setParseErr('')
+  } catch (e) {
+    setParseErr(e as string)
+    navigate('/')
   }
 }
 
@@ -186,6 +184,8 @@ export const consoleLogState = () => {
 }
 
 const logic = {
+  parseErr,
+  setParseErr,
   seqs,
   idx,
   setIdx,

@@ -4,6 +4,7 @@ import GoalTabs from './GoalTabs'
 import logic, { consoleLogState, createEffectLogic, initSeq } from './Logic'
 import Premises from './Premises'
 import TacticButtons from './TacticButtons'
+import UndoRedoButton from './UndoRedoButton'
 
 const Game = () => {
   onMount(() => {
@@ -47,6 +48,7 @@ const Game = () => {
       </main>
       <footer class='container sticky bottom-0 z-10 mx-auto bg-neutral-900 p-2'>
         <TacticButtons />
+        <UndoRedoButton />
       </footer>
     </div>
   )

@@ -16,6 +16,7 @@
     "@solidjs/router": "^0.14.1",
     "change-case": "^5.4.4",
     "katex": "^0.16.11",
+    "solid-icons": "^1.1.0",
     "solid-js": "^1.8.19",
     "ts-enum-util": "^4.1.0",
     "wasm": "file:wasm/pkg"

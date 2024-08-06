@@ -255,19 +255,19 @@ export const consoleLogState = () => {
   })
 }
 
-const setTacticAndSaveState = () => {
+const setTacticAndSaveState = (t: Tactic) => {
   updateGoalIdx()
-  setTactic(tactic())
+  setTactic(t)
   saveState()
 }
-const setFml1AndSaveState = () => {
+const setFml1AndSaveState = (f1: Formula) => {
   updateGoalIdx()
-  setFml1(fml1())
+  setFml1(f1)
   saveState()
 }
-const setFml2AndSaveState = () => {
+const setFml2AndSaveState = (f2: Formula) => {
   updateGoalIdx()
-  setFml2(fml2())
+  setFml2(f2)
   saveState()
 }
 

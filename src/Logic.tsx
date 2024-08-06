@@ -12,16 +12,26 @@ import {
   Result,
 } from 'wasm'
 
+interface State {
+  seqs: Sequent[]
+  goalIdx: number
+  tactic: Tactic | undefined
+  fml1: Formula | undefined
+  fml2: Formula | undefined
+}
+
 const [parseErr, setParseErr] = createSignal('')
 const [seqs, setSeqs] = createSignal<Sequent[]>([])
-const [idx, setIdx] = createSignal(0)
+const [goalIdx, setGoalIdx] = createSignal(0)
 const [candidates, setCandidates] = createSignal<Candidate[]>([])
 const [tactic, setTactic] = createSignal<Tactic>()
 const [fml1, setFml1] = createSignal<Formula>()
 const [fml2, setFml2] = createSignal<Formula>()
+const [history, setHistory] = createSignal<State[]>([])
+const [historyIdx, setHistoryIdx] = createSignal(0)
 
 const seq = () => {
-  return seqs()[idx()]!
+  return seqs()[goalIdx()]!
 }
 const tactics = () => {
   return candidates().map((c) => c.tactic)
@@ -57,25 +67,87 @@ export const initSeq = () => {
   try {
     setSeqs([parse_sequent(str)])
     setParseErr('')
+    setHistory([
+      {
+        seqs: seqs(),
+        goalIdx: 0,
+        tactic: undefined,
+        fml1: undefined,
+        fml2: undefined,
+      },
+    ])
   } catch (e) {
     setParseErr(e as string)
     navigate('/')
   }
 }
 
+export const canUndo = () => {
+  return historyIdx() > 0
+}
+
+export const undo = () => {
+  if (historyIdx() > 0) {
+    setHistoryIdx((pre) => pre - 1)
+    const state = history()[historyIdx()]!
+    setSeqs(state.seqs)
+    setGoalIdx(state.goalIdx)
+    setTactic(state.tactic)
+    setFml1(state.fml1)
+    setFml2(state.fml2)
+  }
+}
+
+export const canRedo = () => {
+  return historyIdx() < history().length - 1
+}
+
+export const redo = () => {
+  if (historyIdx() < history().length - 1) {
+    setHistoryIdx((pre) => pre + 1)
+    const state = history()[historyIdx()]!
+    setSeqs(state.seqs)
+    setGoalIdx(state.goalIdx)
+    setTactic(state.tactic)
+    setFml1(state.fml1)
+    setFml2(state.fml2)
+  }
+}
+
+const updateGoalIdx = () => {
+  const newHistory = structuredClone(history())
+  newHistory[historyIdx()]!.goalIdx = goalIdx()
+  setHistory(newHistory)
+}
+
+const saveState = () => {
+  setHistoryIdx((pre) => pre + 1)
+  const preHistory = structuredClone(history()).slice(0, historyIdx())
+  setHistory([
+    ...preHistory,
+    {
+      seqs: seqs(),
+      goalIdx: goalIdx(),
+      tactic: tactic(),
+      fml1: fml1(),
+      fml2: fml2(),
+    },
+  ])
+}
+
 const setNewSeqs = (result: Result) => {
   if (result === 'Done') {
-    setSeqs(seqs().filter((_, i) => i !== idx()))
-    setIdx(0)
+    setSeqs(seqs().filter((_, i) => i !== goalIdx()))
+    setGoalIdx(0)
   } else if ('Subgoal' in result) {
     const newSeqs = structuredClone(seqs())
-    newSeqs[idx()] = result.Subgoal
+    newSeqs[goalIdx()] = result.Subgoal
     setSeqs(newSeqs)
-    console.log('seq:', seqs()[idx()])
+    console.log('seq:', seqs()[goalIdx()])
   } else if ('Subgoals' in result) {
     const newSeqs = structuredClone(seqs())
     const [subgoal1, subgoal2] = result.Subgoals
-    newSeqs.splice(idx(), 1, subgoal1, subgoal2)
+    newSeqs.splice(goalIdx(), 1, subgoal1, subgoal2)
     setSeqs(newSeqs)
   }
 }
@@ -90,7 +162,7 @@ export const createEffectLogic = () => {
   })
   createEffect(() => {
     seqs()
-    idx()
+    goalIdx()
     setTactic(undefined)
     setFml1(undefined)
     setFml2(undefined)
@@ -183,22 +255,38 @@ export const consoleLogState = () => {
   })
 }
 
+const setTacticAndSaveState = () => {
+  updateGoalIdx()
+  setTactic(tactic())
+  saveState()
+}
+const setFml1AndSaveState = () => {
+  updateGoalIdx()
+  setFml1(fml1())
+  saveState()
+}
+const setFml2AndSaveState = () => {
+  updateGoalIdx()
+  setFml2(fml2())
+  saveState()
+}
+
 const logic = {
   parseErr,
   setParseErr,
   seqs,
-  idx,
-  setIdx,
+  goalIdx,
+  setGoalIdx,
   seq,
   tactics,
   tactic,
-  setTactic,
+  setTactic: setTacticAndSaveState,
   fml1s,
   fml1,
-  setFml1,
+  setFml1: setFml1AndSaveState,
   fml2s,
   fml2,
-  setFml2,
+  setFml2: setFml2AndSaveState,
 }
 
 export default logic

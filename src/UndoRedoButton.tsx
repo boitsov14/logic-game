@@ -1,11 +1,13 @@
 import { CgRedo, CgUndo } from 'solid-icons/cg'
+import { canRedo, canUndo, redo, undo } from './Logic'
 
 const UndoButton = () => {
   return (
     <div class='flex items-center space-x-1'>
       <button
         class='flex size-10 items-center justify-center rounded-full bg-gradient-to-b from-neutral-700 to-black active:from-black active:to-neutral-700 disabled:from-neutral-800 disabled:to-neutral-800 disabled:text-neutral-500'
-        disabled={false}
+        disabled={!canUndo()}
+        onClick={undo}
       >
         <CgUndo size={24} />
       </button>
@@ -20,7 +22,8 @@ const RedoButton = () => {
       <span>redo</span>
       <button
         class='flex size-10 items-center justify-center rounded-full bg-gradient-to-b from-neutral-700 to-black active:from-black active:to-neutral-700 disabled:from-neutral-800 disabled:to-neutral-800 disabled:text-neutral-500'
-        disabled={false}
+        disabled={!canRedo()}
+        onClick={redo}
       >
         <CgRedo size={24} />
       </button>

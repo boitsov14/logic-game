@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from '@solidjs/router'
 import { snakeCase } from 'change-case'
-import { createEffect, createSignal } from 'solid-js'
+import { batch, createEffect, createSignal } from 'solid-js'
 import {
   parse_sequent,
   Tactic,
@@ -82,6 +82,18 @@ export const initSeq = () => {
   }
 }
 
+export const cleanUpState = () => {
+  batch(() => {
+    setSeqs([])
+    setGoalIdx(0)
+    setTactic(undefined)
+    setFml1(undefined)
+    setFml2(undefined)
+    setHistory([])
+    setHistoryIdx(0)
+  })
+}
+
 export const canUndo = () => {
   return historyIdx() > 0
 }
@@ -90,11 +102,13 @@ export const undo = () => {
   if (historyIdx() > 0) {
     setHistoryIdx((pre) => pre - 1)
     const state = history()[historyIdx()]!
-    setSeqs(state.seqs)
-    setGoalIdx(state.goalIdx)
-    setTactic(state.tactic)
-    setFml1(state.fml1)
-    setFml2(state.fml2)
+    batch(() => {
+      setSeqs(state.seqs)
+      setGoalIdx(state.goalIdx)
+      setTactic(state.tactic)
+      setFml1(state.fml1)
+      setFml2(state.fml2)
+    })
   }
 }
 
@@ -106,11 +120,13 @@ export const redo = () => {
   if (historyIdx() < history().length - 1) {
     setHistoryIdx((pre) => pre + 1)
     const state = history()[historyIdx()]!
-    setSeqs(state.seqs)
-    setGoalIdx(state.goalIdx)
-    setTactic(state.tactic)
-    setFml1(state.fml1)
-    setFml2(state.fml2)
+    batch(() => {
+      setSeqs(state.seqs)
+      setGoalIdx(state.goalIdx)
+      setTactic(state.tactic)
+      setFml1(state.fml1)
+      setFml2(state.fml2)
+    })
   }
 }
 
@@ -163,9 +179,11 @@ export const createEffectLogic = () => {
   createEffect(() => {
     seqs()
     goalIdx()
-    setTactic(undefined)
-    setFml1(undefined)
-    setFml2(undefined)
+    batch(() => {
+      setTactic(undefined)
+      setFml1(undefined)
+      setFml2(undefined)
+    })
   })
   createEffect(() => {
     if (

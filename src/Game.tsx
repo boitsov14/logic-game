@@ -1,7 +1,12 @@
-import { onMount, Show } from 'solid-js'
+import { onCleanup, onMount, Show } from 'solid-js'
 import Conclusion from './Conclusion'
 import GoalTabs from './GoalTabs'
-import logic, { consoleLogState, createEffectLogic, initSeq } from './Logic'
+import logic, {
+  cleanUpState,
+  consoleLogState,
+  createEffectLogic,
+  initSeq,
+} from './Logic'
 import Premises from './Premises'
 import TacticButtons from './TacticButtons'
 import UndoRedoButton from './UndoRedoButton'
@@ -9,6 +14,9 @@ import UndoRedoButton from './UndoRedoButton'
 const Game = () => {
   onMount(() => {
     initSeq()
+  })
+  onCleanup(() => {
+    cleanUpState()
   })
   createEffectLogic()
   consoleLogState()

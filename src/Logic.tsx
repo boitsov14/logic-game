@@ -105,10 +105,10 @@ export const undo = () => {
     batch(() => {
       setSeqs(state.seqs)
       setGoalIdx(state.goalIdx)
-      setTactic(state.tactic)
-      setFml1(state.fml1)
-      setFml2(state.fml2)
     })
+    setTactic(state.tactic)
+    setFml1(state.fml1)
+    setFml2(state.fml2)
   }
 }
 
@@ -123,10 +123,10 @@ export const redo = () => {
     batch(() => {
       setSeqs(state.seqs)
       setGoalIdx(state.goalIdx)
-      setTactic(state.tactic)
-      setFml1(state.fml1)
-      setFml2(state.fml2)
     })
+    setTactic(state.tactic)
+    setFml1(state.fml1)
+    setFml2(state.fml2)
   }
 }
 
@@ -179,11 +179,9 @@ export const createEffectLogic = () => {
   createEffect(() => {
     seqs()
     goalIdx()
-    batch(() => {
-      setTactic(undefined)
-      setFml1(undefined)
-      setFml2(undefined)
-    })
+    setTactic(undefined)
+    setFml1(undefined)
+    setFml2(undefined)
   })
   createEffect(() => {
     if (

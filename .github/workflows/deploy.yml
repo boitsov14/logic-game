@@ -13,6 +13,8 @@ jobs:
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - name: Cache Rust
         uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: 'wasm -> target'
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
